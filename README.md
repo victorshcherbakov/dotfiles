@@ -48,3 +48,15 @@ alacritty
 sudo add-apt-repository ppa:aslatter/ppa
 sudo apt update
 
+Fonts for alacritty from:
+https://github.com/ryanoasis/nerd-fonts
+To:
+~/.local/share/fonts/ttf
+
+Clear and regenerate your font cache
+fc-cache -f -v
+
+Verify the installation
+fc-list | grep JetBrainsMono
+
+subversion
