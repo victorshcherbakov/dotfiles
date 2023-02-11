@@ -27,6 +27,7 @@ https://github.com/oh-my-fish/oh-my-fish
 curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
 omf install bobthefish
 omf theme bobthefish
+deb http://ppa.launchpad.net/fish-shell/release-3/ubuntu focal main
 
 # lua-language-server
 1. Download the latest release:
@@ -44,6 +45,9 @@ https://github.com/sharkdp/bat
 git:
 # add-apt-repository ppa:git-core/ppa # apt update; apt install git
 
+cmake
+pip install cmake --upgrade
+
 alacritty
 sudo add-apt-repository ppa:aslatter/ppa
 sudo apt update
@@ -60,3 +64,6 @@ Verify the installation
 fc-list | grep JetBrainsMono
 
 subversion
+
+nvim:
+deb http://ppa.launchpad.net/neovim-ppa/stable/ubuntu focal main
