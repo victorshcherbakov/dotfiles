@@ -1,17 +1,5 @@
 # .dotfiles collection
 
-fish:
-sudo add-apt-repository ppa:fish-shell/release-3
-
-# Change your default shell:
-[ -x /usr/bin/fish ] && SHELL=/usr/bin/fish exec /usr/bin/fish
-
-https://github.com/oh-my-fish/oh-my-fish
-curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
-omf install bobthefish
-omf theme bobthefish
-deb http://ppa.launchpad.net/fish-shell/release-3/ubuntu focal main
-
 # lua-language-server
 1. Download the latest release:
 https://github.com/sumneko/lua-language-server/releases

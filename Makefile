@@ -18,6 +18,10 @@ install: install-fish install-nvim install-gdb install-tmux install-alacritty in
 install-fish:
 	stow --target=${TARGET_DIR} fish
 
+.PHONY: uninstall-fish
+uninstall-fish:
+	stow --delete --target=${TARGET_DIR} fish
+
 .PHONY: install-nvim
 install-nvim:
 	stow --target=${TARGET_DIR} nvim
