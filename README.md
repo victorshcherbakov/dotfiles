@@ -13,17 +13,5 @@ https://github.com/PatrickF1/fzf.fish#installation
 https://github.com/sharkdp/fd#installation
 https://github.com/sharkdp/bat
 
-git:
-# add-apt-repository ppa:git-core/ppa # apt update; apt install git
-
-cmake
-pip install cmake --upgrade
-
-alacritty
-sudo add-apt-repository ppa:aslatter/ppa
-sudo apt update
-
-subversion
-
 nvim:
 https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
