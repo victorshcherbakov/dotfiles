@@ -105,3 +105,4 @@ if [ ! -x "$(command -v fish)" ] && [ ! -d "$HOME/.config/fish" ]; then
 else
     echo "Skip 'fish' installation"
 fi
+
