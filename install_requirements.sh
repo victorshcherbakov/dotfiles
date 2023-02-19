@@ -99,9 +99,8 @@ if [ ! -x "$(command -v fish)" ] && [ ! -d "$HOME/.config/fish" ]; then
 
     echo "Theme installation from https://github.com/oh-my-fish/oh-my-fish"
     curl https://raw.githubusercontent.com/oh-my-fish/oh-my-fish/master/bin/install | fish
-    omf install bobthefish
-    omf theme bobthefish
-    exit
+    fish --command="omf install bobthefish"
+    fish --command="omf theme bobthefish"
 else
     echo "Skip 'fish' installation"
 fi
