@@ -15,3 +15,6 @@ https://github.com/sharkdp/bat
 
 nvim:
 https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.deb
+
+exa
+fzf
