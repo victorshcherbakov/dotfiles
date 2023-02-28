@@ -14,7 +14,7 @@ fi
 # Install/update all the required packages
 shell=/bin/bash
 script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-$shell $script_dir/install_by_package_manager.sh curl jq
+$shell "$script_dir/install_by_package_manager.sh" curl jq
 if [[ $? -ne 0 ]]; then
 	exit 1
 fi
