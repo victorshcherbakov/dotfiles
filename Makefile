@@ -70,6 +70,9 @@ install-bat: preinstall
 install-stow: preinstall
 	${SHELL} ${MKFILE_DIR}/script/stow.sh
 
+install-rg: preinstall
+	${SHELL} ${MKFILE_DIR}/script/rg.sh
+
 .PHONY: clean
 clean:
 	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty mc i3 polybar rofi
