@@ -15,7 +15,10 @@ install: install-fish \
 	install-lf \
 	install-fzf \
 	install-fd \
-	install-bat
+	install-bat \
+	install-rg \
+	install-ninja \
+	install-direnv
 
 .PHONY: install-fish
 install-fish: preinstall install-stow
@@ -67,11 +70,17 @@ install-fd: preinstall
 install-bat: preinstall
 	${SHELL} ${MKFILE_DIR}/script/bat.sh
 
-install-stow: preinstall
-	${SHELL} ${MKFILE_DIR}/script/stow.sh
-
 install-rg: preinstall
 	${SHELL} ${MKFILE_DIR}/script/rg.sh
+
+install-ninja: preinstall
+	${SHELL} ${MKFILE_DIR}/script/ninja.sh
+
+install-direnv: preinstall
+	${SHELL} ${MKFILE_DIR}/script/direnv.sh
+
+install-stow: preinstall
+	${SHELL} ${MKFILE_DIR}/script/stow.sh
 
 .PHONY: clean
 clean:
