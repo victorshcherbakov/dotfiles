@@ -10,8 +10,7 @@ install: install-fish \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
-	install-i3 \
-	install-mc \
+	# install-i3 \
 	install-lf \
 	install-fzf \
 	install-fd \
@@ -21,7 +20,7 @@ install: install-fish \
 	install-direnv
 
 .PHONY: install-fish
-install-fish: preinstall install-stow
+install-fish: preinstall install-stow install-svn
 	${SHELL} ${MKFILE_DIR}/script/fish.sh
 	stow --target=${TARGET_DIR} fish
 
@@ -44,7 +43,7 @@ install-tmux: preinstall install-stow
 	stow --target=${TARGET_DIR} tmux
 
 .PHONY: install-alacritty
-install-alacritty: preinstall install-stow install-lf
+install-alacritty: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
 
@@ -82,9 +81,12 @@ install-direnv: preinstall
 install-stow: preinstall
 	${SHELL} ${MKFILE_DIR}/script/stow.sh
 
+install-svn: preinstall
+	${SHELL} ${MKFILE_DIR}/script/svn.sh
+
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty mc i3 polybar rofi
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty i3 polybar rofi
 
 preinstall:
 	${SHELL} ${MKFILE_DIR}/script/preinstall.sh
