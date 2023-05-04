@@ -1,9 +1,8 @@
 #!/bin/bash
 
-if [[ $# -ne 3 ]]; then
-	echo "Please use this script in this way:"
-	echo "${0##*/} {github_user_name} {github_user_repository_name} {trailing_part_of_archive_name}"
-	echo "${0##*/} junegunn fzf -linux_amd64.tar.gz"
+if ! [[ -x "$(command -v fish)" ]]; then
+	>&2 echo "The fish isn't found. Install it before."
+	>&2 echo "Error occured. Exit"
 	exit 1
 fi
 
@@ -15,9 +14,9 @@ if [[ $? -ne 0 ]]; then
 	exit 1
 fi
 
-user=$1
-repo=$2
-fname=$3
+user=LuaLS
+repo=lua-language-server
+fname=-linux-x64.tar.gz
 api_url="https://api.github.com/repos/${user}/${repo}/releases/latest"
 
 # Fetch the download link for the latest release
@@ -40,7 +39,7 @@ if [[ -z ${url} ]]; then
 	exit 1
 fi
 
-local_bin="$HOME/.local/bin"
+local_bin="$HOME/.local/bin/lua-language-server"
 mkdir -p "$local_bin"
 if [[ $? -ne 0 ]]; then
 	>&2 echo "Cannot create the directory \`$local_bin\`"
@@ -64,3 +63,12 @@ tar -xzf ${tmp_fpath} -C "$local_bin"
 
 echo "Cleanup"
 rm ${tmp_fpath}
+
+lua_language_server_bin="$local_bin/bin"
+if [ ! -d "$lua_language_server_bin" ] 
+then
+    echo "Directory \"$lua_language_server_bin\" DOES NOT exists." 
+    exit 1
+fi
+
+fish --command="fish_add_path -a \"$lua_language_server_bin\""

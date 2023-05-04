@@ -45,6 +45,12 @@ echo "URL: ${url}"
 echo "Download binary"
 tmp_fpath="/tmp/$(date +%s)_${fname}"
 curl --silent --location ${url} --output ${tmp_fpath}
+if [[ $? -ne 0 ]]; then
+	>&2 echo "Cannot download from \`$url\`"
+	>&2 echo "Error occured. Exit"
+	rm ${tmp_fpath}
+	exit 1
+fi
 
 echo "Install .deb package"
 sudo dpkg -i ${tmp_fpath}
