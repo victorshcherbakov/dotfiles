@@ -1,15 +1,19 @@
 local km = require "sinbizkit.keymap"
 
+km.map("n", "<C-s>", ":w<CR>") -- Save a current document
+
 -- {{{ Motions
 km.map("n", "<", ",")
 km.map("n", ">", ";")
 -- }}}
 
 -- {{{ Buffer modification
-km.map("n", "J", ":m .+1<CR>==") -- Move current line down
-km.map("n", "K", ":m .-2<CR>==") -- Move current line up
+km.map("n", "J", ":m .+1<CR>==")     -- Move current line down
+km.map("n", "K", ":m .-2<CR>==")     -- Move current line up
 km.map("v", "J", ":m '>+1<CR>gv=gv") -- Move selected block down
 km.map("v", "K", ":m '<-2<CR>gv=gv") -- Move selected block up
+km.map("v", "<C-c>", "\"+y")         -- Copy to the Clipboard Buffer
+km.map("n", "<C-v>", "\"+p")         -- Paste from the Clipboard Buffer
 -- }}}
 
 -- {{{ Tabs moving
@@ -19,12 +23,12 @@ km.map("n", "<M-k>", "<Cmd>+tabmove<CR>") -- Move current tab page to the right.
 
 -- {{{ Tabs navigation
 km.map("n", "<M-h>", "<Cmd>tabprevious<CR>") -- Move current tab page to the left.
-km.map("n", "<M-l>", "<Cmd>tabnext<CR>") -- Move current tab page to the right.
+km.map("n", "<M-l>", "<Cmd>tabnext<CR>")     -- Move current tab page to the right.
 -- }}}
 
 -- {{{ Panes creation
 km.map("n", "<Space>e", "<Cmd>vsplit<CR>") -- Split current window vertically.
-km.map("n", "<Space>o", "<Cmd>split<CR>") -- Split current window horizontally.
+km.map("n", "<Space>o", "<Cmd>split<CR>")  -- Split current window horizontally.
 km.map("n", "<Space>t", "<Cmd>tabnew<CR>") -- Open new tab.
 -- }}}
 --

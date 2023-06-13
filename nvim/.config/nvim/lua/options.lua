@@ -35,6 +35,8 @@ opt.shortmess = "atIc" -- Remove all useless messages.
 opt.splitbelow = true -- Splitting will put the new window below the current one.
 opt.pumheight = 15 -- Maximum number of items showed in a popup menu.
 opt.signcolumn = "yes" -- Always show the sign column.
+opt.ignorecase = true -- Use case insensitive search,
+opt.smartcase = true -- except when using capital letters.
 
 -- This will show the popup menu even if there's only one match (menuone),
 -- prevent automatic selection (noselect) and prevent automatic text injection
