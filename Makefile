@@ -10,7 +10,6 @@ install: install-fish \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
-	# install-i3 \
 	install-lf \
 	install-fzf \
 	install-fd \

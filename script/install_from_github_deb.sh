@@ -2,7 +2,7 @@
 
 if [[ $# -ne 3 ]]; then
 	echo "Please use this script like:"
-	echo "${0##*/} {github_user_name} {github_user_repository_name} {trailing_part_of_archive_name}"
+	echo "${0##*/} {github_user_name} {github_user_repository_name} {regex_for_deb_package}"
 	echo "${0##*/} neovim neovim nvim-linux64.deb"
 	exit 1
 fi
@@ -17,7 +17,7 @@ fi
 
 user=$1
 repo=$2
-fname=$3
+regex_name=$3
 api_url="https://api.github.com/repos/${user}/${repo}/releases/latest"
 
 
@@ -31,23 +31,23 @@ fi
 
 url=$(echo ${http_resp} | jq '.assets[]
 	| {name: .name, url: .browser_download_url}
-	| select(.name | test(".*'${fname}'"))
+	| select(.name | test(".*'${regex_name}'"))
 	| .url' \
 	| tr -d '"')
 
 if [[ -z ${url} ]]; then
-	>&2 echo "Download URL not found, url: ${url}, fname: ${fname}"
+	>&2 echo "Download URL not found, url: ${url}, regex: ${regex_name}"
 	>&2 echo "Error occured. Exit"
 	exit 1
 fi
 
 echo "URL: ${url}"
-echo "Download binary"
-tmp_fpath="/tmp/$(date +%s)_${fname}"
+echo "Download binary:"
+tmp_fpath="/tmp/$(date +%s)_$(date +%s)_$(date +%s).deb"
 curl --silent --location ${url} --output ${tmp_fpath}
 if [[ $? -ne 0 ]]; then
-	>&2 echo "Cannot download from \`$url\`"
-	>&2 echo "Error occured. Exit"
+	>&2 echo "Cannot download from \`${url}\`"
+	>&2 echo "Error occured ($?). Exit"
 	rm ${tmp_fpath}
 	exit 1
 fi
@@ -57,3 +57,4 @@ sudo dpkg -i ${tmp_fpath}
 
 echo "Cleanup"
 rm ${tmp_fpath}
+
