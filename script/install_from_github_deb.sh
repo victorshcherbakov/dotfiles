@@ -36,7 +36,7 @@ url=$(echo ${http_resp} | jq '.assets[]
 	| tr -d '"')
 
 if [[ -z ${url} ]]; then
-	>&2 echo "Download URL not found"
+	>&2 echo "Download URL not found, url: ${url}, fname: ${fname}"
 	>&2 echo "Error occured. Exit"
 	exit 1
 fi
