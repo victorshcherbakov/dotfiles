@@ -17,7 +17,7 @@ return {
     fmt(
       [[
       //  File: {}
-      //  Created by Ivan Berdnikov on {}
+      //  Created by Victor Shcherbakov on {}
       //
       {}]],
       {
@@ -243,7 +243,7 @@ return {
 
   s(
     "todo",
-    fmt("//{type}({email}: {date}) {descr}", {
+    fmt("// {type}({email}: {date}): {descr}", {
       type = c(1, {
         t "TODO",
         t "FIXME",

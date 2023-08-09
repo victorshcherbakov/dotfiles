@@ -86,11 +86,14 @@ function M.config()
   end)
   km.map("n", "<Leader>st", builtin.resume)
   -- f- find
-  km.map("n", "<Leader>t", builtin.find_files)
-  km.map("n", "<Leader>g", function()
+  km.map("n", "<Leader>fi", function()
+    builtin.find_files { hidden = true, no_ignore = true, no_ignore_parent = true }
+  end)
+  km.map("n", "<Leader>ff", builtin.find_files)
+  km.map("n", "<Leader>fg", function()
     builtin.live_grep { path_display = { "shorten" } }
   end)
-  km.map("v", "<Leader>g", function()
+  km.map("v", "<Leader>fg", function()
     builtin.grep_string { search = vis_selection(), word_match = "-w", path_display = { "truncate" } }
   end)
   km.map("n", "<Leader>fb", builtin.current_buffer_fuzzy_find)
