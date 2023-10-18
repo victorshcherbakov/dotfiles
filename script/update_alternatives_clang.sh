@@ -21,3 +21,6 @@ update-alternatives --install $BIN/clangd clangd $BIN/clangd-$BVER $PRIORITY \
 	--slave $MAN/clangd.gz clangd.gz $MAN/clangd-$MVER.gz
 
 update-alternatives --install $BIN/lld lld $BIN/lld-$BVER $PRIORITY
+
+update-alternatives --install $BIN/lldb lldb $BIN/lldb-$BVER $PRIORITY
+
