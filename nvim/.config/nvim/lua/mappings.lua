@@ -9,6 +9,7 @@ km.map("n", ">", ";")
 -- }}}
 
 -- {{{ Buffer modification
+km.map("n", "<Leader>q", ":bw<CR>")  -- Close the current buffer
 km.map("n", "J", ":m .+1<CR>==")     -- Move current line down
 km.map("n", "K", ":m .-2<CR>==")     -- Move current line up
 km.map("v", "J", ":m '>+1<CR>gv=gv") -- Move selected block down
