@@ -5,7 +5,8 @@ MKFILE_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 all: install
 
 
-install: install-fish \
+install: install-git \
+	install-fish \
 	install-nvim \
 	install-gdb \
 	install-tmux \
@@ -82,6 +83,9 @@ install-stow: preinstall
 
 install-svn: preinstall
 	${SHELL} ${MKFILE_DIR}/script/svn.sh
+
+install-svn: preinstall
+	${SHELL} ${MKFILE_DIR}/script/git.sh
 
 .PHONY: clean
 clean:

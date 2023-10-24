@@ -91,7 +91,7 @@ function M.config()
   end)
   km.map("n", "<Leader>ff", builtin.find_files)
   km.map("n", "<Leader>fg", function()
-    builtin.live_grep { path_display = { "shorten" } }
+    builtin.live_grep { path_display = { "shorten" }, additional_args = { "--hidden" } }
   end)
   km.map("v", "<Leader>fg", function()
     builtin.grep_string { search = vis_selection(), word_match = "-w", path_display = { "truncate" } }
