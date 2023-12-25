@@ -18,9 +18,9 @@ fi
 sudo apt update
 sudo apt install git
 
-git config --global alias.co checkout
+git config --global alias.ch checkout
 git config --global alias.br branch
-git config --global alias.cm commit
+git config --global alias.co commit
 git config --global alias.st status
 
 exit $?

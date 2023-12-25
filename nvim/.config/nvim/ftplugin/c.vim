@@ -1,2 +1,2 @@
-let &colorcolumn="80,".join(range(121, 999),",")
+let &colorcolumn="100,".join(range(121, 999),",")
 
