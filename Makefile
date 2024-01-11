@@ -84,7 +84,7 @@ install-stow: preinstall
 install-svn: preinstall
 	${SHELL} ${MKFILE_DIR}/script/svn.sh
 
-install-svn: preinstall
+install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
 
 .PHONY: clean
