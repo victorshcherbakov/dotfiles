@@ -1,23 +1,36 @@
 #!/bin/bash
 
-if [[ -f "/etc/arch-release" ]]; then
-	sudo pacman -S --needed fish
-	exit $?
-fi
-
 echo "Fonts installation"
 FONTS_DIR=${HOME}/.local/share/fonts/ttf/nerd-fonts/JetBrainsMono
+RESTORE_PWD=`pwd`
 sudo rm -r "${FONTS_DIR}"
 mkdir -p "${FONTS_DIR}"
 if [[ $? -ne 0 ]]; then
 	exit $?
 fi
-svn co https://github.com/ryanoasis/nerd-fonts/trunk/patched-fonts/JetBrainsMono/Ligatures "${FONTS_DIR}"
+git clone -n --depth=1 --filter=tree:0 https://github.com/ryanoasis/nerd-fonts "${FONTS_DIR}"
 if [[ $? -ne 0 ]]; then
 	exit $?
 fi
-fc-cache -f
+
+cd "${FONTS_DIR}"
 unset FONTS_DIR
+git sparse-checkout set --no-cone patched-fonts/JetBrainsMono/Ligatures
+if [[ $? -ne 0 ]]; then
+	cd "${RESTORE_PWD}"
+	exit $?
+fi
+
+git checkout
+if [[ $? -ne 0 ]]; then
+	cd "${RESTORE_PWD}"
+	exit $?
+fi
+
+cd "${RESTORE_PWD}"
+unset RESTORE_PWD
+
+fc-cache -f
 
 echo "Add PPA for 'fish'"
 sudo add-apt-repository -r ppa:fish-shell/release-3
