@@ -1,7 +1,7 @@
 local km = require "sinbizkit.keymap"
 
 km.map("n", "<C-s>", ":w<CR>") -- Save a current document
-km.map("n", "<C-S>", ":wa<CR>") -- Save all the modified documents
+km.map("n", "<C-S>", ":wa<CR><CR>") -- Save all the modified documents
 
 -- {{{ Motions
 km.map("n", "<", ",")
