@@ -17,6 +17,7 @@ install: install-git \
 	install-bat \
 	install-rg \
 	install-ninja \
+	install-lazygit \
 	install-direnv
 
 .PHONY: install-fish
@@ -86,6 +87,10 @@ install-svn: preinstall
 
 install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
+
+install-lazygit: preinstall install-stow install-git
+	${SHELL} ${MKFILE_DIR}/script/lazygit.sh
+	stow --target=${TARGET_DIR} lazygit
 
 .PHONY: clean
 clean:
