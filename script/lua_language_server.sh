@@ -72,3 +72,4 @@ then
 fi
 
 fish --command="fish_add_path -a \"$lua_language_server_bin\""
+exit 0

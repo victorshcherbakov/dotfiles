@@ -5,7 +5,10 @@ MKFILE_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 all: install
 
 
-install: install-git \
+install: preinstall \
+	install-git \
+	install-stow \
+	install-svn \
 	install-fish \
 	install-nvim \
 	install-gdb \
@@ -18,15 +21,18 @@ install: install-git \
 	install-rg \
 	install-ninja \
 	install-lazygit \
-	install-direnv
+	install-direnv \
+	install-lua-lsp \
+	install-cmake-lsp \
+	install-python-lsp
 
 .PHONY: install-fish
-install-fish: preinstall install-stow install-svn
+install-fish: preinstall
 	${SHELL} ${MKFILE_DIR}/script/fish.sh
 	stow --target=${TARGET_DIR} fish
 
 .PHONY: install-nvim
-install-nvim: preinstall install-stow
+install-nvim: preinstall
 	${SHELL} ${MKFILE_DIR}/script/nvim.sh
 	stow --target=${TARGET_DIR} nvim
 
@@ -39,27 +45,27 @@ install-gdb:
 	stow --target=${TARGET_DIR} gdb
 
 .PHONY: install-tmux
-install-tmux: preinstall install-stow
+install-tmux: preinstall
 	${SHELL} ${MKFILE_DIR}/script/tmux.sh
 	stow --target=${TARGET_DIR} tmux
 
 .PHONY: install-alacritty
-install-alacritty: preinstall install-stow
+install-alacritty: preinstall
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
 
-.PHONY: install-i3
-install-i3: preinstall install-stow
-	${SHELL} ${MKFILE_DIR}/script/i3.sh
-	stow --target=${TARGET_DIR} i3 polybar rofi
+#.PHONY: install-i3
+#install-i3: preinstall install-stow
+#	${SHELL} ${MKFILE_DIR}/script/i3.sh
+#	stow --target=${TARGET_DIR} i3 polybar rofi
 
 .PHONY: install-lf
-install-lf: preinstall install-stow install-fzf
+install-lf: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lf.sh
 	stow --adopt --target=${TARGET_DIR} lf
 
 .PHONY: install-fzf
-install-fzf: preinstall install-fd install-bat
+install-fzf: preinstall
 	${SHELL} ${MKFILE_DIR}/script/fzf.sh
 
 .PHONY: install-fd
@@ -70,31 +76,53 @@ install-fd: preinstall
 install-bat: preinstall
 	${SHELL} ${MKFILE_DIR}/script/bat.sh
 
+.PHONY: install-rg
 install-rg: preinstall
 	${SHELL} ${MKFILE_DIR}/script/rg.sh
 
+.PHONY: install-ninja
 install-ninja: preinstall
 	${SHELL} ${MKFILE_DIR}/script/ninja.sh
 
+.PHONY: install-direnv
 install-direnv: preinstall
 	${SHELL} ${MKFILE_DIR}/script/direnv.sh
 
+.PHONY: install-stow
 install-stow: preinstall
 	${SHELL} ${MKFILE_DIR}/script/stow.sh
 
+.PHONY: install-svn
 install-svn: preinstall
 	${SHELL} ${MKFILE_DIR}/script/svn.sh
 
+.PHONY: install-git
 install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
 
-install-lazygit: preinstall install-stow install-git
+.PHONY: install-lazygit
+install-lazygit: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lazygit.sh
 	stow --target=${TARGET_DIR} lazygit
 
+.PHONY: install-lua-lsp
+install-lua-lsp: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lua_language_server.sh
+
+.PHONY: install-cmake-lsp
+install-cmake-lsp:
+	$(info To install CMake Language Server, run the following command:)
+	$(info pip install cmake-language-server)
+
+.PHONY: install-python-lsp
+install-python-lsp:
+	$(info To install Python Language Server, run the following command:)
+	$(info pip install pyright)
+
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty i3 polybar rofi
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty polybar rofi lazygit
 
+.PHONY: preinstall
 preinstall:
 	${SHELL} ${MKFILE_DIR}/script/preinstall.sh
