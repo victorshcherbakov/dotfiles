@@ -15,12 +15,11 @@ return {
         ignore = false,
       },
     },
-    keys = { "<F6>", "<Leader><F6>" },
+    keys = { "<Leader>t" },
     config = function(_, opts)
       require("nvim-tree").setup(opts)
       local km = require "sinbizkit.keymap"
-      km.map("n", "<F6>", "<Cmd>NvimTreeToggle<CR>")
-      km.map("n", "<Leader><F6>", "<Cmd>NvimTreeFindFile<CR>")
+      km.map("n", "<Leader>t", "<Cmd>NvimTreeFindFileToggle<CR>", { desc = 'Toggle tree-view and select of the current file' })
     end,
   },
 
