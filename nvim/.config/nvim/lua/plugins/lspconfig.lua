@@ -95,16 +95,6 @@ function M.config()
     local config = config_or_default(server)
     lspconfig[server].setup(config)
   end
-
-  -- vim.api.nvim_create_autocmd("LspAttach", {
-  --   callback = function(args)
-  --     local bufnr = args.buf
-  --     local client = vim.lsp.get_client_by_id(args.data.client_id)
-  --     if client.server_capabilities.inlayHintProvider then
-  --       vim.lsp.inlay_hint(bufnr, true)
-  --     end
-  --   end,
-  -- })
 end
 
 return M
