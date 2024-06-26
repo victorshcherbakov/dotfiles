@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -f "/etc/arch-release" ]]; then
-	sudo pacman -S --needed fzf
+	sudo pacman -S --needed lazygit
 	exit $?
 fi
 

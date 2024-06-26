@@ -1,0 +1,10 @@
+# github.com
+Host github.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_ed25519.pub
+
+# Private GitLab instance
+Host git.unigine.com
+  PreferredAuthentications publickey
+  IdentityFile ~/.ssh/id_ed25519_another_one.pub
+
