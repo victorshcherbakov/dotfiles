@@ -6,6 +6,6 @@ if [[ -f "/etc/arch-release" ]]; then
 	exit $?
 fi
 
-echo "TODO:"
+echo "TODO: install google chrome"
 
 exit 1

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 if [[ -f "/etc/arch-release" ]]; then
-	sudo pacman -S --needed ninja
+	sudo pacman -S --needed curl
 else
-	sudo apt install ninja-build
+	sudo apt install curl
 fi
 
 exit $?

@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [[ -f "/etc/arch-release" ]]; then
+	sudo pacman -S --needed lua-language-server
+    exit $?
+fi
+
 if ! [[ -x "$(command -v fish)" ]]; then
 	>&2 echo "The fish isn't found. Install it before."
 	>&2 echo "Error occured. Exit"

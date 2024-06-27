@@ -7,8 +7,8 @@ all: install
 
 install: preinstall \
 	install-git \
-	install-stow \
 	install-svn \
+	install-stow \
 	install-fish \
 	install-nvim \
 	install-gdb \
@@ -22,22 +22,35 @@ install: preinstall \
 	install-ninja \
 	install-lazygit \
 	install-direnv \
+	install-cmake \
 	install-lua-lsp \
 	install-cmake-lsp \
 	install-python-lsp
 
+.PHONY: install-git
+install-git: preinstall
+	${SHELL} ${MKFILE_DIR}/script/git.sh
+
+.PHONY: install-svn
+install-svn: preinstall
+	${SHELL} ${MKFILE_DIR}/script/svn.sh
+
+.PHONY: install-stow
+install-stow: preinstall
+	${SHELL} ${MKFILE_DIR}/script/stow.sh
+
 .PHONY: install-fish
-install-fish: preinstall
+install-fish: preinstall install-stow install-git install-curl
 	${SHELL} ${MKFILE_DIR}/script/fish.sh
 	stow --target=${TARGET_DIR} fish
 
 .PHONY: install-nvim
-install-nvim: preinstall
+install-nvim: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/nvim.sh
 	stow --target=${TARGET_DIR} nvim
 
 .PHONY: install-gdb
-install-gdb:
+install-gdb: install-stow install-git install-svn
 	rm -rf ${HOME}/.local/share/gdb/qt5
 	mkdir -p ${HOME}/.local/share/gdb/qt5
 	git clone https://invent.kde.org/ebuka/gdb_printers.git ${HOME}/.local/share/gdb/qt5
@@ -45,12 +58,12 @@ install-gdb:
 	stow --target=${TARGET_DIR} gdb
 
 .PHONY: install-tmux
-install-tmux: preinstall
+install-tmux: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/tmux.sh
 	stow --target=${TARGET_DIR} tmux
 
 .PHONY: install-alacritty
-install-alacritty: preinstall
+install-alacritty: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
 
@@ -60,7 +73,7 @@ install-alacritty: preinstall
 #	stow --target=${TARGET_DIR} i3 polybar rofi
 
 .PHONY: install-lf
-install-lf: preinstall
+install-lf: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/lf.sh
 	stow --adopt --target=${TARGET_DIR} lf
 
@@ -84,29 +97,21 @@ install-rg: preinstall
 install-ninja: preinstall
 	${SHELL} ${MKFILE_DIR}/script/ninja.sh
 
+.PHONY: install-lazygit
+install-lazygit: preinstall install-stow
+	${SHELL} ${MKFILE_DIR}/script/lazygit.sh
+	stow --target=${TARGET_DIR} lazygit
+
 .PHONY: install-direnv
 install-direnv: preinstall
 	${SHELL} ${MKFILE_DIR}/script/direnv.sh
 
-.PHONY: install-stow
-install-stow: preinstall
-	${SHELL} ${MKFILE_DIR}/script/stow.sh
-
-.PHONY: install-svn
-install-svn: preinstall
-	${SHELL} ${MKFILE_DIR}/script/svn.sh
-
-.PHONY: install-git
-install-git: preinstall
-	${SHELL} ${MKFILE_DIR}/script/git.sh
-
-.PHONY: install-lazygit
-install-lazygit: preinstall
-	${SHELL} ${MKFILE_DIR}/script/lazygit.sh
-	stow --target=${TARGET_DIR} lazygit
+.PHONY: install-cmake
+install-cmake: preinstall
+	${SHELL} ${MKFILE_DIR}/script/cmake.sh
 
 .PHONY: install-lua-lsp
-install-lua-lsp: preinstall
+install-lua-lsp: preinstall install-curl
 	${SHELL} ${MKFILE_DIR}/script/lua_language_server.sh
 
 .PHONY: install-cmake-lsp
@@ -119,9 +124,13 @@ install-python-lsp:
 	$(info To install Python Language Server, run the following command:)
 	$(info pip install pyright)
 
+.PHONY: install-curl
+install-curl: preinstall
+	${SHELL} ${MKFILE_DIR}/script/curl.sh
+
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty polybar rofi lazygit
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit
 
 .PHONY: preinstall
 preinstall:

@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Check requirements
+if [ ! -x "$(command -v git)" ]; then
+    echo "'git' is required."
+    exit 1
+fi
+if [ ! -x "$(command -v fc-cache)" ]; then
+    echo "'fc-cache' is required."
+    exit 1
+fi
+if [ ! -x "$(command -v curl)" ]; then
+    echo "'curl' is required."
+    exit 1
+fi
+
 echo "Fonts installation"
 FONTS_DIR=${HOME}/.local/share/fonts/ttf/nerd-fonts/JetBrainsMono
 RESTORE_PWD=`pwd`
@@ -43,8 +57,13 @@ if [[ $? -ne 0 ]]; then
 fi
 
 echo "'fish' installation..."
-sudo apt update
-sudo apt install fish
+
+if [[ -f "/etc/arch-release" ]]; then
+    sudo pacman -S --needed fish
+else
+    sudo apt install fish
+fi
+
 if [[ $? -ne 0 ]]; then
 	exit $?
 fi
