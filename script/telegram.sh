@@ -2,7 +2,7 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed telegram-desktop
-    exit $?
+	exit $?
 fi
 
 echo "TODO: install telegram"

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [[ -f "/etc/arch-release" ]]; then
+	echo "Enable AUR in 'pamac' and search for yandex-disk there"
+	echo "After installation type 'yandex-disk setup'"
+	exit $?
+fi
+
 if [ ! -x "$(command -v wget)" ]; then
     echo "'wget' installation has been started."
     sudo apt update
