@@ -28,7 +28,9 @@ install: preinstall \
 	install-lsp-lua \
 	install-lsp-cmake \
 	install-lsp-python \
-	install-lsp-bash
+	install-lsp-bash \
+	install-lld \
+	install-lldb
 
 .PHONY: install-git
 install-git: preinstall
@@ -136,6 +138,14 @@ install-lsp-python: preinstall install-yay
 .PHONY: install-lsp-bash
 install-lsp-bash: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lsp_bash.sh
+
+.PHONY: install-lld
+install-lld: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lld.sh
+
+.PHONY: install-lldb
+install-lldb: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lldb.sh
 
 .PHONY: install-curl
 install-curl: preinstall
