@@ -25,9 +25,10 @@ install: preinstall \
 	install-cmake \
 	install-python \
 	install-python-pip \
-	install-lua-lsp \
-	install-cmake-lsp \
-	install-python-lsp
+	install-lsp-lua \
+	install-lsp-cmake \
+	install-lsp-python \
+	install-lsp-bash
 
 .PHONY: install-git
 install-git: preinstall
@@ -120,17 +121,21 @@ install-python: preinstall
 install-python-pip: preinstall install-python
 	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
 
-.PHONY: install-lua-lsp
-install-lua-lsp: preinstall install-curl
-	${SHELL} ${MKFILE_DIR}/script/lua_language_server.sh
+.PHONY: install-lsp-lua
+install-lsp-lua: preinstall install-curl
+	${SHELL} ${MKFILE_DIR}/script/lsp_lua.sh
 
-.PHONY: install-cmake-lsp
-install-cmake-lsp: preinstall install-yay
-	${SHELL} ${MKFILE_DIR}/script/cmake_language_server.sh
+.PHONY: install-lsp-cmake
+install-lsp-cmake: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/lsp_cmake.sh
 
-.PHONY: install-python-lsp
-install-python-lsp: preinstall install-yay
-	${SHELL} ${MKFILE_DIR}/script/python_language_server.sh
+.PHONY: install-lsp-python
+install-lsp-python: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/lsp_python.sh
+
+.PHONY: install-lsp-bash
+install-lsp-bash: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lsp_bash.sh
 
 .PHONY: install-curl
 install-curl: preinstall

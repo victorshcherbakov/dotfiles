@@ -6,11 +6,11 @@ local M = {
 function M.config()
   require("gitsigns").setup {
     signs = {
-      add = { hl = "GitSignsAdd", text = "▌", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },
-      change = { hl = "GitSignsChange", text = "▌", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
-      delete = { hl = "GitSignsDelete", text = "_", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-      topdelete = { hl = "GitSignsDelete", text = "‾", numhl = "GitSignsDeleteNr", linehl = "GitSignsDeleteLn" },
-      changedelete = { hl = "GitSignsChange", text = "~", numhl = "GitSignsChangeNr", linehl = "GitSignsChangeLn" },
+      add = { text = "▌" },
+      change = { text = "▌" },
+      delete = { text = "_" },
+      topdelete = { text = "‾" },
+      changedelete = { text = "~" },
     },
 
     on_attach = function()
@@ -25,7 +25,7 @@ function M.config()
       km.map("n", "<leader>hS", gitsigns.stage_buffer)
       -- Reset
       km.map("n", "<Leader>hr", gitsigns.reset_hunk)
-      km.map("v", "<Leader>hh", function()
+      km.map("v", "<Leader>hr", function()
         gitsigns.reset_hunk { line ".", line "v" }
       end)
       km.map("n", "<Leader>hR", gitsigns.reset_buffer)
