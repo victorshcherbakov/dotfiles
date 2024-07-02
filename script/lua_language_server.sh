@@ -2,7 +2,7 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed lua-language-server
-    exit $?
+	exit $?
 fi
 
 if ! [[ -x "$(command -v fish)" ]]; then

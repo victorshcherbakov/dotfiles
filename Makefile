@@ -23,6 +23,8 @@ install: preinstall \
 	install-lazygit \
 	install-direnv \
 	install-cmake \
+	install-python \
+	install-python-pip \
 	install-lua-lsp \
 	install-cmake-lsp \
 	install-python-lsp
@@ -110,23 +112,33 @@ install-direnv: preinstall
 install-cmake: preinstall
 	${SHELL} ${MKFILE_DIR}/script/cmake.sh
 
+.PHONY: install-python
+install-python: preinstall
+	${SHELL} ${MKFILE_DIR}/script/python.sh
+
+.PHONY: install-python-pip
+install-python-pip: preinstall install-python
+	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
+
 .PHONY: install-lua-lsp
 install-lua-lsp: preinstall install-curl
 	${SHELL} ${MKFILE_DIR}/script/lua_language_server.sh
 
 .PHONY: install-cmake-lsp
-install-cmake-lsp:
-	$(info To install CMake Language Server, run the following command:)
-	$(info pip install cmake-language-server)
+install-cmake-lsp: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/cmake_language_server.sh
 
 .PHONY: install-python-lsp
-install-python-lsp:
-	$(info To install Python Language Server, run the following command:)
-	$(info pip install pyright)
+install-python-lsp: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/python_language_server.sh
 
 .PHONY: install-curl
 install-curl: preinstall
 	${SHELL} ${MKFILE_DIR}/script/curl.sh
+
+.PHONY: install-yay
+install-yay: preinstall
+	${SHELL} ${MKFILE_DIR}/script/yay.sh
 
 .PHONY: clean
 clean:
