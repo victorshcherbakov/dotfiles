@@ -32,7 +32,8 @@ install: preinstall \
 	install-mold \
 	install-lld \
 	install-lldb \
-	install-meld
+	install-meld \
+	install-remmina
 
 .PHONY: install-git
 install-git: preinstall
@@ -156,6 +157,10 @@ install-lldb: preinstall
 .PHONY: install-meld
 install-meld: preinstall
 	${SHELL} ${MKFILE_DIR}/script/meld.sh
+
+.PHONY: install-remmina
+install-remmina: preinstall
+	${SHELL} ${MKFILE_DIR}/script/remmina.sh
 
 .PHONY: install-curl
 install-curl: preinstall
