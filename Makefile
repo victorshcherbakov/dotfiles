@@ -29,8 +29,10 @@ install: preinstall \
 	install-lsp-cmake \
 	install-lsp-python \
 	install-lsp-bash \
+	install-mold \
 	install-lld \
-	install-lldb
+	install-lldb \
+	install-meld
 
 .PHONY: install-git
 install-git: preinstall
@@ -139,6 +141,10 @@ install-lsp-python: preinstall install-yay
 install-lsp-bash: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lsp_bash.sh
 
+.PHONY: install-mold
+install-mold: preinstall
+	${SHELL} ${MKFILE_DIR}/script/mold.sh
+
 .PHONY: install-lld
 install-lld: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lld.sh
@@ -146,6 +152,10 @@ install-lld: preinstall
 .PHONY: install-lldb
 install-lldb: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lldb.sh
+
+.PHONY: install-meld
+install-meld: preinstall
+	${SHELL} ${MKFILE_DIR}/script/meld.sh
 
 .PHONY: install-curl
 install-curl: preinstall
