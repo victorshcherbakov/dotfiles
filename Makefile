@@ -177,3 +177,7 @@ clean:
 .PHONY: preinstall
 preinstall:
 	${SHELL} ${MKFILE_DIR}/script/preinstall.sh
+
+.PHONY: preinstall_aur
+preinstall_aur:
+	${SHELL} ${MKFILE_DIR}/script/preinstall_aur.sh
