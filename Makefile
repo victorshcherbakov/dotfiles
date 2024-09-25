@@ -39,6 +39,10 @@ install: preinstall \
 install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
 
+.PHONY: install-git-lfs
+install-git-lfs: preinstall
+	${SHELL} ${MKFILE_DIR}/script/git_lfs.sh
+
 .PHONY: install-svn
 install-svn: preinstall
 	${SHELL} ${MKFILE_DIR}/script/svn.sh
@@ -178,6 +182,3 @@ clean:
 preinstall:
 	${SHELL} ${MKFILE_DIR}/script/preinstall.sh
 
-.PHONY: preinstall_aur
-preinstall_aur:
-	${SHELL} ${MKFILE_DIR}/script/preinstall_aur.sh
