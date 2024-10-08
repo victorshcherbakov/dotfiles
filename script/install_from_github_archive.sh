@@ -35,26 +35,32 @@ url=$(echo ${http_resp} | jq '.assets[]
 	| tr -d '"')
 
 if [[ -z ${url} ]]; then
-	>&2 echo "Download URL not found"
+	>&2 echo "Download URL not found, url: ${url}, fname: ${fname}"
 	>&2 echo "Error occured. Exit"
 	exit 1
 fi
 
-local_bin="$HOME/.local/bin"
-mkdir -p "$local_bin"
+local_dir="${HOME}/.local/bin"
+mkdir -p "${local_dir}"
 if [[ $? -ne 0 ]]; then
-	>&2 echo "Cannot create the directory \`$local_bin\`"
+	>&2 echo "Cannot create the directory \`${local_dir}\`"
 	>&2 echo "Error occured. Exit"
 	exit 1
 fi
 
 tmp_fpath="/tmp/$user_$repo_$(date +%s)_$fname.tar.gz"
 echo "URL: ${url}"
-echo "Download binary"
+echo "Download binary from: ${url}"
 curl --silent --location ${url} --output ${tmp_fpath}
+if [[ $? -ne 0 ]]; then
+	>&2 echo "Cannot download from \`$url\`"
+	>&2 echo "Error occured. Exit"
+	rm ${tmp_fpath}
+	exit 1
+fi
 
-echo "Unpack .tar archive"
-tar -xzf ${tmp_fpath} -C "$local_bin"
+echo "Unpack .tar archive to: ${local_dir}"
+tar -xzf ${tmp_fpath} -C "${local_dir}"
 
 echo "Cleanup"
 rm ${tmp_fpath}

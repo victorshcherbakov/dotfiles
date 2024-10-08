@@ -3,10 +3,10 @@
 BIN=/usr/bin
 MAN=/usr/share/man/man1
 
-BVER=14
-MVER=14.1
+BVER=18
+MVER=18.1
 
-PRIORITY=214
+PRIORITY=216
 
 
 update-alternatives --install $BIN/clang clang $BIN/clang-$BVER $PRIORITY \
@@ -21,3 +21,6 @@ update-alternatives --install $BIN/clangd clangd $BIN/clangd-$BVER $PRIORITY \
 	--slave $MAN/clangd.gz clangd.gz $MAN/clangd-$MVER.gz
 
 update-alternatives --install $BIN/lld lld $BIN/lld-$BVER $PRIORITY
+
+update-alternatives --install $BIN/lldb lldb $BIN/lldb-$BVER $PRIORITY
+

@@ -81,14 +81,17 @@ function M.config()
   km.map("n", "<Leader>sb", builtin.buffers)
   km.map("n", "<Leader>sr", builtin.registers)
   km.map("n", "<Leader>sj", builtin.jumplist)
-  km.map("n", "<Leader>sd", function()
+  km.map("n", "<Leader>sD", function()
     builtin.diagnostics { bufnr = 0 }
   end)
   km.map("n", "<Leader>st", builtin.resume)
   -- f- find
-  km.map("n", "<Leader>t", builtin.find_files)
+  km.map("n", "<Leader>fi", function()
+    builtin.find_files { hidden = true, no_ignore = true, no_ignore_parent = true }
+  end)
+  km.map("n", "<Leader>ff", builtin.find_files)
   km.map("n", "<Leader>fg", function()
-    builtin.live_grep { path_display = { "shorten" } }
+    builtin.live_grep { path_display = { "shorten" }, additional_args = { "--hidden" } }
   end)
   km.map("v", "<Leader>fg", function()
     builtin.grep_string { search = vis_selection(), word_match = "-w", path_display = { "truncate" } }

@@ -1,7 +1,7 @@
 local M = {}
 
 M.user_email = function()
-  local def_value = "i.berdnikov"
+  local def_value = "victor"
   local handle = io.popen "git config --get user.email"
   if handle == nil then
     return def_value

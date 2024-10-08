@@ -5,19 +5,53 @@ MKFILE_DIR := $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
 all: install
 
 
-install: install-fish \
+install: preinstall \
+	install-git \
+	install-svn \
+	install-stow \
+	install-fish \
 	install-nvim \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
-	install-i3 \
-	install-mc \
 	install-lf \
 	install-fzf \
-	install-fd
+	install-fd \
+	install-bat \
+	install-rg \
+	install-ninja \
+	install-lazygit \
+	install-direnv \
+	install-cmake \
+	install-python \
+	install-python-pip \
+	install-lsp-lua \
+	install-lsp-cmake \
+	install-lsp-python \
+	install-lsp-bash \
+	install-mold \
+	install-clang \
+	install-meld \
+	install-remmina
+
+.PHONY: install-git
+install-git: preinstall
+	${SHELL} ${MKFILE_DIR}/script/git.sh
+
+.PHONY: install-git-lfs
+install-git-lfs: preinstall
+	${SHELL} ${MKFILE_DIR}/script/git_lfs.sh
+
+.PHONY: install-svn
+install-svn: preinstall
+	${SHELL} ${MKFILE_DIR}/script/svn.sh
+
+.PHONY: install-stow
+install-stow: preinstall
+	${SHELL} ${MKFILE_DIR}/script/stow.sh
 
 .PHONY: install-fish
-install-fish: preinstall install-stow
+install-fish: preinstall install-stow install-git install-curl
 	${SHELL} ${MKFILE_DIR}/script/fish.sh
 	stow --target=${TARGET_DIR} fish
 
@@ -31,7 +65,7 @@ install-nvim: preinstall install-stow
 	stow --target=${TARGET_DIR} nvim
 
 .PHONY: install-gdb
-install-gdb:
+install-gdb: install-stow install-git install-svn
 	rm -rf ${HOME}/.local/share/gdb/qt5
 	mkdir -p ${HOME}/.local/share/gdb/qt5
 	git clone https://invent.kde.org/ebuka/gdb_printers.git ${HOME}/.local/share/gdb/qt5
@@ -44,34 +78,106 @@ install-tmux: preinstall install-stow
 	stow --target=${TARGET_DIR} tmux
 
 .PHONY: install-alacritty
-install-alacritty: preinstall install-stow install-lf
+install-alacritty: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
 
-.PHONY: install-i3
-install-i3: preinstall install-stow
-	${SHELL} ${MKFILE_DIR}/script/i3.sh
-	stow --target=${TARGET_DIR} i3 polybar rofi
+#.PHONY: install-i3
+#install-i3: preinstall install-stow
+#	${SHELL} ${MKFILE_DIR}/script/i3.sh
+#	stow --target=${TARGET_DIR} i3 polybar rofi
 
 .PHONY: install-lf
-install-lf: preinstall install-stow install-fzf
+install-lf: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/lf.sh
 	stow --adopt --target=${TARGET_DIR} lf
 
 .PHONY: install-fzf
-install-fzf: preinstall install-fd
+install-fzf: preinstall
 	${SHELL} ${MKFILE_DIR}/script/fzf.sh
 
 .PHONY: install-fd
 install-fd: preinstall
 	${SHELL} ${MKFILE_DIR}/script/fd.sh
 
-install-stow: preinstall
-	${SHELL} ${MKFILE_DIR}/script/stow.sh
+.PHONY: install-bat
+install-bat: preinstall
+	${SHELL} ${MKFILE_DIR}/script/bat.sh
+
+.PHONY: install-rg
+install-rg: preinstall
+	${SHELL} ${MKFILE_DIR}/script/rg.sh
+
+.PHONY: install-ninja
+install-ninja: preinstall
+	${SHELL} ${MKFILE_DIR}/script/ninja.sh
+
+.PHONY: install-lazygit
+install-lazygit: preinstall install-stow
+	${SHELL} ${MKFILE_DIR}/script/lazygit.sh
+	stow --target=${TARGET_DIR} lazygit
+
+.PHONY: install-direnv
+install-direnv: preinstall
+	${SHELL} ${MKFILE_DIR}/script/direnv.sh
+
+.PHONY: install-cmake
+install-cmake: preinstall
+	${SHELL} ${MKFILE_DIR}/script/cmake.sh
+
+.PHONY: install-python
+install-python: preinstall
+	${SHELL} ${MKFILE_DIR}/script/python.sh
+
+.PHONY: install-python-pip
+install-python-pip: preinstall install-python
+	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
+
+.PHONY: install-lsp-lua
+install-lsp-lua: preinstall install-curl
+	${SHELL} ${MKFILE_DIR}/script/lsp_lua.sh
+
+.PHONY: install-lsp-cmake
+install-lsp-cmake: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/lsp_cmake.sh
+
+.PHONY: install-lsp-python
+install-lsp-python: preinstall install-yay
+	${SHELL} ${MKFILE_DIR}/script/lsp_python.sh
+
+.PHONY: install-lsp-bash
+install-lsp-bash: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lsp_bash.sh
+
+.PHONY: install-mold
+install-mold: preinstall
+	${SHELL} ${MKFILE_DIR}/script/mold.sh
+
+.PHONY: install-clang
+install-clang: preinstall
+	${SHELL} ${MKFILE_DIR}/script/clang.sh
+
+.PHONY: install-meld
+install-meld: preinstall
+	${SHELL} ${MKFILE_DIR}/script/meld.sh
+
+.PHONY: install-remmina
+install-remmina: preinstall
+	${SHELL} ${MKFILE_DIR}/script/remmina.sh
+
+.PHONY: install-curl
+install-curl: preinstall
+	${SHELL} ${MKFILE_DIR}/script/curl.sh
+
+.PHONY: install-yay
+install-yay: preinstall
+	${SHELL} ${MKFILE_DIR}/script/yay.sh
 
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty mc i3 polybar rofi
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit
 
+.PHONY: preinstall
 preinstall:
 	${SHELL} ${MKFILE_DIR}/script/preinstall.sh
+

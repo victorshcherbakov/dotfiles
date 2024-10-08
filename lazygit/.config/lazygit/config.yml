@@ -1,0 +1,18 @@
+customCommands:
+  - key: "u"
+    command: "git config status.showUntrackedFiles {{.Form.Value}}"
+    context: "global"
+    prompts:
+      - type: "menu"
+        title: "Show untracked?"
+        key: "Value"
+        options:
+          - value: "normal"
+            name: "Normal"
+            description: "Show untracked files"
+          - value: "all"
+            name: "All"
+            description: "Show untracked files (individual files in directories)"
+          - value: "no"
+            name: "No"
+            description: "Hide untracked files"
