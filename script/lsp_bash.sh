@@ -6,5 +6,5 @@ if [[ -f "/etc/arch-release" ]]; then
 fi
 
 echo "TODO: install bash-language-server"
-
-exit 1
+# Don't interrupt installation
+exit 0

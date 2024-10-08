@@ -1,7 +1,20 @@
 #!/bin/bash
 
-sudo add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-17 main'
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key|sudo apt-key add -
-sudo apt update
-sudo apt install clang-17 lldb-17 lld-17 clang-tidy-17 clangd-17 clang-format-17 clang-tools-17
+MAJOR_VERSION="18"
+
+if [[ -f "/etc/arch-release" ]]; then
+	echo "TODO: install clang"
+	sudo pacman -S --needed lld
+	sudo pacman -S --needed lldb
+	exit 1
+else
+	sudo apt install "clang-$MAJOR_VERSION"
+	sudo apt install "clang-tidy-$MAJOR_VERSION"
+	sudo apt install "clangd-$MAJOR_VERSION"
+	sudo apt install "clang-format-$MAJOR_VERSION"
+	sudo apt install "clang-tools-$MAJOR_VERSION"
+	sudo apt install "lld-$MAJOR_VERSION"
+	sudo apt install "lldb-$MAJOR_VERSION"
+fi
+
 exit $?

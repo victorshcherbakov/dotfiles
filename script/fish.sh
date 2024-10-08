@@ -51,16 +51,6 @@ echo "'fish' installation..."
 if [[ -f "/etc/arch-release" ]]; then
     sudo pacman -S --needed fish
 else
-    echo "Add PPA for 'fish'"
-    sudo add-apt-repository -r ppa:fish-shell/release-3
-    if [[ $? -ne 0 ]]; then
-	    exit $?
-    fi
-    sudo add-apt-repository ppa:fish-shell/release-3
-    if [[ $? -ne 0 ]]; then
-	    exit $?
-    fi
-    sudo apt update
     sudo apt install fish
 fi
 

@@ -3,8 +3,8 @@
 BIN=/usr/bin
 MAN=/usr/share/man/man1
 
-BVER=17
-MVER=17.1
+BVER=18
+MVER=18.1
 
 PRIORITY=216
 

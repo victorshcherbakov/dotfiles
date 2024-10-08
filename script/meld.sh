@@ -2,9 +2,8 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed meld
-	exit $?
+else
+	sudo apt install meld
 fi
 
-echo "TODO: install meld"
-
-exit 1
+exit $?

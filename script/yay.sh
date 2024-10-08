@@ -5,4 +5,4 @@ if [[ -f "/etc/arch-release" ]]; then
 	exit $?
 fi
 
-exit 1
+exit 0

@@ -4,6 +4,7 @@ if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed git
 	if [[ $? -ne 0 ]]; then
 		exit $?
+	fi
 else
 	sudo add-apt-repository -r ppa:git-core/ppa
 	if [[ $? -ne 0 ]]; then

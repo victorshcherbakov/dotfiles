@@ -30,8 +30,7 @@ install: preinstall \
 	install-lsp-python \
 	install-lsp-bash \
 	install-mold \
-	install-lld \
-	install-lldb \
+	install-clang \
 	install-meld \
 	install-remmina
 
@@ -150,13 +149,9 @@ install-lsp-bash: preinstall
 install-mold: preinstall
 	${SHELL} ${MKFILE_DIR}/script/mold.sh
 
-.PHONY: install-lld
-install-lld: preinstall
-	${SHELL} ${MKFILE_DIR}/script/lld.sh
-
-.PHONY: install-lldb
-install-lldb: preinstall
-	${SHELL} ${MKFILE_DIR}/script/lldb.sh
+.PHONY: install-clang
+install-clang: preinstall
+	${SHELL} ${MKFILE_DIR}/script/clang.sh
 
 .PHONY: install-meld
 install-meld: preinstall

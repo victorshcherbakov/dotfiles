@@ -6,5 +6,5 @@ if [[ -f "/etc/arch-release" ]]; then
 fi
 
 echo "TODO: install Python Language Server"
-
-exit 1
+# Don't interrupt installation
+exit 0

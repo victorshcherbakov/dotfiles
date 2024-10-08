@@ -7,5 +7,5 @@ if [[ -f "/etc/arch-release" ]]; then
 fi
 
 echo "TODO: install remmina and freerdp"
-
-exit 1
+# Don't interrupt installation
+exit 0

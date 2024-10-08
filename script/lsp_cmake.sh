@@ -6,5 +6,6 @@ if [[ -f "/etc/arch-release" ]]; then
 fi
 
 echo "TODO: install Cmake Language Server"
-
-exit 1
+echo "from https://github.com/regen100/cmake-language-server"
+# Don't interrupt installation
+exit 0

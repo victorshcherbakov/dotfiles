@@ -2,9 +2,8 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed python
-	exit $?
+else
+	sudo apt install python3
 fi
 
-echo "TODO: install python"
-
-exit 1
+exit $?

@@ -2,9 +2,8 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed mold
-	exit $?
+else
+	sudo apt install mold
 fi
 
-echo "TODO: install mold"
-
-exit 1
+exit $?

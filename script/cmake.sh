@@ -2,9 +2,8 @@
 
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed cmake
-    exit $?
+else
+	sudo apt install cmake
 fi
 
-echo "TODO: install cmake"
-
-exit 1
+exit $?
