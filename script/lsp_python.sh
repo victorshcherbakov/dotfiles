@@ -5,6 +5,15 @@ if [[ -f "/etc/arch-release" ]]; then
 	exit $?
 fi
 
-echo "TODO: install Python Language Server"
-# Don't interrupt installation
-exit 0
+if [ ! -x "$(command -v snap)" ]; then
+	echo "'snap' is required."
+	exit 1
+fi
+
+sudo snap install pyright --classic
+if [[ $? -ne 0 ]]; then
+	exit 1
+fi
+
+sudo snap refresh pyright
+exit $?

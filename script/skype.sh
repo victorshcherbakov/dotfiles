@@ -1,14 +1,14 @@
 #!/bin/bash
 
-if [[ -f "/etc/arch-release" ]]; then
-    if [ ! -x "$(command -v snap)" ]; then
-        echo "'snap' is required."
-        exit 1
-    fi
-	sudo snap install skype
-    exit $?
+if [ ! -x "$(command -v snap)" ]; then
+	echo "'snap' is required."
+	exit 1
 fi
 
-echo "TODO: install skype"
+sudo snap install skype
+if [[ $? -ne 0 ]]; then
+	exit 1
+fi
 
-exit 1
+sudo snap refresh skype
+exit $?
