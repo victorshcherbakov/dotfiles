@@ -1,4 +1,4 @@
-set ncpu 4
+set ncpu 16
 
 switch  (uname)
 case Linux
