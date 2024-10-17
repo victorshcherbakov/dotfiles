@@ -17,7 +17,7 @@ function M.config()
     require("sinbizkit.lsp.mappings").map_buf()
   end
 
-  local servers = { "clangd", "gopls", "cmake", "pyright", "bashls", "tsserver", "lua_ls" }
+  local servers = { "clangd", "gopls", "cmake", "pyright", "bashls", "ts_ls", "lua_ls" }
   local default_config = {
     capabilities = capabilities,
     on_attach = default_lsp_attach_handler,
