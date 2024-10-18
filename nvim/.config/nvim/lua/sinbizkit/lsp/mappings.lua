@@ -23,12 +23,20 @@ return {
     km.buf_map("n", "<Leader>gI", vim.lsp.buf.implementation,
       { desc = 'Lists all the implementations for the symbol under the cursor in the quickfix window' }
     )
-    km.buf_map("n", "<Leader>gn", vim.diagnostic.goto_next,
-      { desc = 'Jump to the next diagnostic' }
-    )
-    km.buf_map("n", "<Leader>gp", vim.diagnostic.goto_prev,
-      { desc = 'Jump to the previous diagnostic' }
-    )
+    km.buf_map("n", "<Leader>gn", function()
+      local get_next = vim.diagnostic.get_next()
+      if get_next then
+        vim.diagnostic.goto_next()
+        vim.api.nvim_command('normal! zz')
+      end
+    end, { desc = 'Jump to the next diagnostic and center the line' })
+    km.buf_map("n", "<Leader>gp", function()
+      local get_prev = vim.diagnostic.get_prev()
+      if get_prev then
+        vim.diagnostic.goto_prev()
+        vim.api.nvim_command('normal! zz')
+      end
+    end, { desc = 'Jump to the previous diagnostic and center the line' })
 
     -- d - do
     km.buf_map("n", "<Leader>di", vim.lsp.buf.code_action,
