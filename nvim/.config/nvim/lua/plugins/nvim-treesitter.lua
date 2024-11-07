@@ -27,7 +27,7 @@ return {
     ensure_installed = {
       "c",
       "cpp",
-      "csharp",
+      "c_sharp",
       "rust",
       "go",
       "lua",
