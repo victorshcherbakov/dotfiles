@@ -15,11 +15,12 @@ return {
         ignore = false,
       },
     },
-    keys = { "<Leader>t" },
+    keys = { "<Leader>tt" },
     config = function(_, opts)
       require("nvim-tree").setup(opts)
       local km = require "sinbizkit.keymap"
-      km.map("n", "<Leader>t", "<Cmd>NvimTreeFindFileToggle<CR>", { desc = 'Toggle tree-view and select of the current file' })
+      km.map("n", "<Leader>tt", "<Cmd>NvimTreeFindFileToggle<CR>",
+        { desc = "Toggle tree-view and select of the current file" })
     end,
   },
 
@@ -110,6 +111,16 @@ return {
       require("symbols-outline").setup(opts)
       local km = require "sinbizkit.keymap"
       km.map("n", "<F5>", "<Cmd>SymbolsOutline<CR>")
+    end,
+  },
+
+  {
+    "nvim-pack/nvim-spectre",
+    keys = { "<Leader>tr" },
+    config = function()
+      require('spectre').setup({ is_block_ui_break = true })
+      local km = require "sinbizkit.keymap"
+      km.map("n", "<Leader>tr", "<Cmd>lua require('spectre').toggle()<CR>", { desc = "Toggle Spectre" })
     end,
   },
 
