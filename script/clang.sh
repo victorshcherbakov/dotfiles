@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAJOR_VERSION="18"
+MAJOR_VERSION="19"
 
 if [[ -f "/etc/arch-release" ]]; then
 	echo "TODO: install clang"
@@ -8,13 +8,16 @@ if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed lldb
 	exit 1
 else
-	sudo apt install "clang-$MAJOR_VERSION"
-	sudo apt install "clang-tidy-$MAJOR_VERSION"
-	sudo apt install "clangd-$MAJOR_VERSION"
-	sudo apt install "clang-format-$MAJOR_VERSION"
-	sudo apt install "clang-tools-$MAJOR_VERSION"
-	sudo apt install "lld-$MAJOR_VERSION"
-	sudo apt install "lldb-$MAJOR_VERSION"
+	sudo apt install "clang-$MAJOR_VERSION" "clang-tidy-$MAJOR_VERSION" "clangd-$MAJOR_VERSION" "clang-format-$MAJOR_VERSION" "clang-tools-$MAJOR_VERSION" "lld-$MAJOR_VERSION" "lldb-$MAJOR_VERSION"
 fi
+
+echo "Remove libclang-VERSION-dev"
+echo "Remove libclang-common-VERSION-dev"
+echo "Remove libclang-cppVERSION"
+echo "Remove libclang-rt-VERSION-dev"
+echo "Remove libclang1-VERSION"
+echo "Remove libllvmVERSION"
+# sudo apt remove libclang-18-dev libclang-common-18-dev libclang-cpp18 libclang-rt-18-dev libclang1-18
+# sudo apt remove clang-18 clang-tidy-18 clangd-18 clang-format-18 clang-tools-18 lld-18 lldb-18
 
 exit $?
