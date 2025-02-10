@@ -67,7 +67,10 @@ return {
       "<Leader><Leader>c",
     },
     config = function()
-      require("hop").setup()
+      require("hop").setup {
+        jump_on_sole_occurrence = false,
+        uppercase_labels = false,
+      }
       local km = require "sinbizkit.keymap"
       km.map("n", "<Leader><Leader>w", "<Cmd>HopWord<CR>")
       km.map("n", "<Leader><Leader>f", "<Cmd>HopWordAC<CR>")
