@@ -83,7 +83,9 @@ function M.config()
   km.map("n", "<Leader>sj", builtin.jumplist)
   km.map("n", "<Leader>sD", function()
     builtin.diagnostics { bufnr = 0 }
-  end)
+  end,
+  { desc = 'Show diagnostics window' }
+  )
   km.map("n", "<Leader>st", builtin.resume)
   -- f- find
   km.map("n", "<Leader>fi", function()
