@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MAJOR_VERSION="19"
+MAJOR_VERSION="20"
 
 if [[ -f "/etc/arch-release" ]]; then
 	echo "TODO: install clang"
