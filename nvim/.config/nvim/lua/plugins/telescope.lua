@@ -1,6 +1,6 @@
 local M = {
   "nvim-telescope/telescope.nvim",
-  version = "0.1.x",
+  version = false,
   dependencies = { "nvim-lua/plenary.nvim" },
   priority = 100,
 }
