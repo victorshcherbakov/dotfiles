@@ -14,6 +14,9 @@ for mode in insert default visual
 	bind -M $mode \cf forward-char
 end
 
+# Fast, cancellable ripgrep + fzf content search
+bind \cs fzf_rg
+
 # Supress greetings message.
 function fish_greeting
 end
