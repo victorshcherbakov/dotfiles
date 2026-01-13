@@ -70,6 +70,9 @@ install-gdb: install-stow install-git install-svn
 
 .PHONY: install-tmux
 install-tmux: preinstall install-stow
+	@echo "Install (or write a script) a clipboard helper"
+	@echo "either Wayland: wl-copy (package: wl-clipboard)"
+	@echo "or X11: xclip (or xsel)"
 	${SHELL} ${MKFILE_DIR}/script/tmux.sh
 	stow --target=${TARGET_DIR} tmux
 
