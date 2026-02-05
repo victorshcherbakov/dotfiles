@@ -16,3 +16,6 @@ customCommands:
           - value: "no"
             name: "No"
             description: "Hide untracked files"
+gui:
+  # If true, do not show a warning when discarding changes in the staging view.
+  skipDiscardChangeWarning: true
