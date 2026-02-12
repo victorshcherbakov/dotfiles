@@ -4,12 +4,12 @@ local M = {
 }
 
 function M.config()
-  local lspconfig = require "lspconfig"
-
   local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+  -- Optional: if you still have nvim-cmp installed, use its capabilities helper.
   local has_cmp_nvim_lsp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
   if has_cmp_nvim_lsp then
-    capabilities = cmp_nvim_lsp.default_capabilities()
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
   end
 
   local function default_lsp_attach_handler(_, bufnr)
@@ -18,83 +18,67 @@ function M.config()
   end
 
   local servers = { "clangd", "gopls", "cmake", "pyright", "bashls", "ts_ls", "lua_ls", "csharp_ls" }
-  local default_config = {
+
+  -- Defaults for all servers you enable.
+  vim.lsp.config("*", {
     capabilities = capabilities,
     on_attach = default_lsp_attach_handler,
-  }
+  })
 
-  -- An LSP config dictionary which should be extended with custom per-server settings.
-  local configs = {
-    clangd = {
-      cmd = {
-        "clangd",
-        "--background-index",
-        "--clang-tidy",
-        "--header-insertion=never",
-        "--header-insertion-decorators=false",
-        "--completion-style=detailed",
-      },
-      on_attach = function(client, bufnr)
-        default_lsp_attach_handler(client, bufnr)
-        require("sinbizkit.keymap").map("n", "<Leader>gs", "<Cmd>ClangdSwitchSourceHeader<CR>")
-      end,
+  -- Per-server overrides.
+  vim.lsp.config("clangd", {
+    cmd = {
+      "clangd",
+      "--background-index",
+      "--clang-tidy",
+      "--header-insertion=never",
+      "--header-insertion-decorators=false",
+      "--completion-style=detailed",
     },
-    gopls = {
-      settings = {
-        gopls = {
-          semanticTokens = true,
-          usePlaceholders = true,
+    on_attach = function(client, bufnr)
+      default_lsp_attach_handler(client, bufnr)
+      require("sinbizkit.keymap").map("n", "<Leader>gs", "<Cmd>ClangdSwitchSourceHeader<CR>")
+    end,
+  })
+
+  vim.lsp.config("gopls", {
+    settings = {
+      gopls = {
+        semanticTokens = true,
+        usePlaceholders = true,
+      },
+    },
+  })
+
+  vim.lsp.config("lua_ls", {
+    settings = {
+      Lua = {
+        runtime = {
+          version = "LuaJIT",
+          path = vim.split(package.path, ";"),
         },
-      },
-    },
-    lua_ls = {
-      settings = {
-        Lua = {
-          runtime = {
-            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-            version = "LuaJIT",
-            -- Setup your lua path
-            path = vim.split(package.path, ";"),
-          },
-          diagnostics = {
-            -- Get the language server to recognize the `vim` global
-            globals = { "vim" },
-          },
-          workspace = {
-            -- Make the server aware of Neovim runtime files
-            library = {
-              [vim.fn.expand "$VIMRUNTIME/lua"] = true,
-              [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-            },
-          },
-          -- Do not send telemetry data containing a randomized but unique identifier
-          telemetry = {
-            enable = false,
+        diagnostics = {
+          globals = { "vim" },
+        },
+        workspace = {
+          library = {
+            [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+            [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
           },
         },
+        telemetry = { enable = false },
       },
-      on_attach = function(client)
-        default_lsp_attach_handler()
-        -- formatting provided by stylua.
-        client.server_capabilities.document_formatting = false
-        client.server_capabilities.document_range_formatting = false
-      end,
     },
-  }
+    on_attach = function(client, bufnr)
+      default_lsp_attach_handler(client, bufnr)
+      -- formatting provided by stylua (null-ls)
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end,
+  })
 
-  -- Returns configuration for provided `server` if found, empty value otherwise.
-  local function config_or_default(server)
-    local config = configs[server]
-    if config == nil then
-      return default_config
-    end
-    return vim.tbl_extend("force", default_config, config)
-  end
-
-  for _, server in ipairs(servers) do
-    local config = config_or_default(server)
-    lspconfig[server].setup(config)
-  end
+  -- Enable the servers so they auto-attach for their filetypes/root markers.
+  vim.lsp.enable(servers)
 end
 
 return M

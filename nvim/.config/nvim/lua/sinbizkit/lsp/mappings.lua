@@ -23,20 +23,34 @@ return {
     km.buf_map("n", "<Leader>gI", vim.lsp.buf.implementation,
       { desc = 'Lists all the implementations for the symbol under the cursor in the quickfix window' }
     )
+    local function jump_with_float(count)
+      return vim.diagnostic.jump({
+        count = count,
+        on_jump = function(diagnostic, bufnr)
+          if not diagnostic then return end
+          vim.diagnostic.open_float({
+            bufnr = bufnr,
+            scope = "cursor",
+            focus = false,
+          })
+        end,
+      })
+    end
+
     km.buf_map("n", "<Leader>gn", function()
-      local get_next = vim.diagnostic.get_next()
-      if get_next then
-        vim.diagnostic.goto_next()
-        vim.api.nvim_command('normal! zz')
+      local diag = jump_with_float(1)
+      if diag then
+        vim.api.nvim_command("normal! zz")
       end
-    end, { desc = 'Jump to the next diagnostic and center the line' })
+    end, { desc = "Jump to the next diagnostic and center the line" })
+
     km.buf_map("n", "<Leader>gp", function()
-      local get_prev = vim.diagnostic.get_prev()
-      if get_prev then
-        vim.diagnostic.goto_prev()
-        vim.api.nvim_command('normal! zz')
+      local diag = jump_with_float(-1)
+      if diag then
+        vim.api.nvim_command("normal! zz")
       end
-    end, { desc = 'Jump to the previous diagnostic and center the line' })
+    end, { desc = "Jump to the previous diagnostic and center the line" })
+
 
     -- d - do
     km.buf_map("n", "<Leader>di", vim.lsp.buf.code_action,
@@ -49,18 +63,22 @@ return {
       { desc = 'Formats the buffer in normal mode and selected part in visual mode' }
     )
 
-    -- lspconfig
-    if pcall(require, "lspconfig") then
-      km.buf_map("n", "<Leader>rl", function()
-          vim.cmd [[ LspRestart ]]
-          vim.notify("LSP servers are reloaded.", vim.log.levels.INFO, {
-            title = "LspConfig",
-            render = "compact",
-          })
-        end,
-        { desc = 'Reloads LSP servers' }
-      )
-    end
+    -- Restart LSP (without requiring deprecated `lspconfig` module).
+    km.buf_map("n", "<Leader>rl", function()
+        if vim.fn.has("nvim-0.11") == 1 and vim.fn.exists(":lsp") == 2 then
+          vim.cmd("lsp restart")
+        elseif vim.fn.exists(":LspRestart") == 2 then
+          vim.cmd("LspRestart")
+        end
+
+        vim.notify("LSP servers are reloaded.", vim.log.levels.INFO, {
+          title = "LspConfig",
+          render = "compact",
+        })
+      end,
+      { desc = "Reloads LSP servers" }
+    )
+
 
     -- Telescope
     if pcall(require, "telescope") then
