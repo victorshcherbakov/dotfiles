@@ -15,7 +15,8 @@ else
 	version=$(sed -n 's/^VERSION_ID="\([^"]*\)"/\1/p' /etc/os-release)
 
 	if [[ "$id" == "$SUPPORTED_ID" && "$version" == "$SUPPORTED_VERSION" ]]; then
-		sudo apt update && sudo apt upgrade
+		sudo apt update
+		sudo apt upgrade
 	else
 		echo "Only these ID=$SUPPORTED_ID and VERSION_ID=$SUPPORTED_VERSION are supported."
 		echo "You have others: ID=$id and VERSION_ID=$version."
@@ -23,4 +24,4 @@ else
 	fi
 fi
 
-exit $?
+exit 0
