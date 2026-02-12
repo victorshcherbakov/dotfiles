@@ -11,6 +11,7 @@ install: preinstall \
 	install-stow \
 	install-fish \
 	install-nvim \
+	install-stylua \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
@@ -59,6 +60,10 @@ install-fish: preinstall install-stow install-git install-curl
 install-nvim: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/nvim.sh
 	stow --target=${TARGET_DIR} nvim
+
+.PHONY: install-stylua
+install-lsp-lua: preinstall
+	${SHELL} ${MKFILE_DIR}/script/stylua.sh
 
 .PHONY: install-gdb
 install-gdb: install-stow install-git install-svn
@@ -131,10 +136,6 @@ install-python: preinstall
 .PHONY: install-python-pip
 install-python-pip: preinstall install-python
 	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
-
-.PHONY: install-lsp-lua
-install-lsp-lua: preinstall install-curl
-	${SHELL} ${MKFILE_DIR}/script/lsp_lua.sh
 
 .PHONY: install-lsp-cmake
 install-lsp-cmake: preinstall install-yay

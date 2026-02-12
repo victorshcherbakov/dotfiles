@@ -59,9 +59,15 @@ return {
     km.buf_map("n", "<Leader>dr", vim.lsp.buf.rename,
       { desc = 'Renames a symbol under cursor' }
     )
-    km.buf_map({ "n", "v" }, "<Leader>df", vim.lsp.buf.format,
-      { desc = 'Formats the buffer in normal mode and selected part in visual mode' }
-    )
+    km.buf_map({ "n", "v" }, "<Leader>df", function()
+      local ok, conform = pcall(require, "conform")
+      if ok then
+        conform.format({ lsp_fallback = true, async = true })
+      else
+        vim.lsp.buf.format({ async = true })
+      end
+    end, { desc = "Formats the buffer in normal mode and selected part in visual mode (conform if available, else LSP)" })
+
 
     -- Restart LSP (without requiring deprecated `lspconfig` module).
     km.buf_map("n", "<Leader>rl", function()
