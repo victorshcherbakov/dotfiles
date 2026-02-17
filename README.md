@@ -21,6 +21,7 @@ make install
 make install-nvim
 make install-tmux
 make install-fish
+make install-lsp-csharp
 ```
 
 Удаление всех symlink'ов:

@@ -33,7 +33,8 @@ install: preinstall \
 	install-mold \
 	install-clang \
 	install-meld \
-	install-remmina
+	install-remmina \
+	install-lsp-csharp
 
 .PHONY: install-git
 install-git: preinstall
@@ -148,6 +149,10 @@ install-lsp-python: preinstall install-yay
 .PHONY: install-lsp-bash
 install-lsp-bash: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lsp_bash.sh
+
+.PHONY: install-lsp-csharp
+install-lsp-csharp: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lsp_csharp.sh
 
 .PHONY: install-mold
 install-mold: preinstall
