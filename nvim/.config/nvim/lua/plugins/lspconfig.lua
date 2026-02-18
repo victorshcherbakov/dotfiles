@@ -37,7 +37,20 @@ function M.config()
     },
     on_attach = function(client, bufnr)
       default_lsp_attach_handler(client, bufnr)
-      require("sinbizkit.keymap").map("n", "<Leader>gs", "<Cmd>ClangdSwitchSourceHeader<CR>")
+      require("sinbizkit.keymap").map("n", "<Leader>gs", function()
+        local params = { uri = vim.uri_from_bufnr(0) }
+        vim.lsp.buf_request(0, "textDocument/switchSourceHeader", params, function(err, result)
+          if err then
+            vim.notify(tostring(err), vim.log.levels.ERROR)
+            return
+          end
+          if not result then
+            vim.notify("Corresponding file can't be determined", vim.log.levels.WARN)
+            return
+          end
+          vim.cmd("edit " .. vim.uri_to_fname(result))
+        end)
+      end)
     end,
   })
 
