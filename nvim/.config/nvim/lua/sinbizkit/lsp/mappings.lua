@@ -24,17 +24,13 @@ return {
       { desc = 'Lists all the implementations for the symbol under the cursor in the quickfix window' }
     )
     local function jump_with_float(count)
-      return vim.diagnostic.jump({
-        count = count,
-        on_jump = function(diagnostic, bufnr)
-          if not diagnostic then return end
-          vim.diagnostic.open_float({
-            bufnr = bufnr,
-            scope = "cursor",
-            focus = false,
-          })
-        end,
-      })
+      local diag = vim.diagnostic.jump({ count = count })
+      if diag then
+        vim.schedule(function()
+          vim.diagnostic.open_float({ scope = "cursor", focus = false })
+        end)
+      end
+      return diag
     end
 
     km.buf_map("n", "<Leader>gn", function()
