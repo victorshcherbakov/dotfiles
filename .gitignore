@@ -5,6 +5,7 @@ nvim/.config/nvim/lazy-lock.json
 lazygit/.config/lazygit/state.yml
 
 fish/.config/fish/fish_variables
+fish/.config/fish/conf.d/fish_frozen_theme.fish
 
 tmux/.tmux/resurrect
 tmux/.tmux/plugins
