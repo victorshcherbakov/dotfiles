@@ -54,6 +54,11 @@ fish/.config/fish/  →  ~/.config/fish/
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
 
+## Шрифты
+
+- **JetBrainsMono Nerd Font** — основной моноширинный шрифт, ставится через `make install-fish` (см. `script/fish.sh`).
+- **Noto Color Emoji** — emoji-шрифт для корректного отображения pictographic-символов (U+1F300–1FAFF, U+2600–27BF) в терминале вместо tofu-квадратов. Ставится отдельно: `make install-emoji-fonts`.
+
 ## Инструменты разработки
 
 **LSP-серверы:** clangd, gopls, pyright, lua_ls, bashls, ts_ls, cmake, csharp_ls

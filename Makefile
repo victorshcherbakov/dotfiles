@@ -34,7 +34,8 @@ install: preinstall \
 	install-clang \
 	install-meld \
 	install-remmina \
-	install-lsp-csharp
+	install-lsp-csharp \
+	install-emoji-fonts
 
 .PHONY: install-git
 install-git: preinstall
@@ -169,6 +170,10 @@ install-meld: preinstall
 .PHONY: install-remmina
 install-remmina: preinstall
 	${SHELL} ${MKFILE_DIR}/script/remmina.sh
+
+.PHONY: install-emoji-fonts
+install-emoji-fonts: preinstall
+	${SHELL} ${MKFILE_DIR}/script/emoji_fonts.sh
 
 .PHONY: install-curl
 install-curl: preinstall
