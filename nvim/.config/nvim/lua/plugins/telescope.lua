@@ -70,9 +70,13 @@ function M.config()
   -- Keymaps.
   -------------------------------------------------------------------------------
   local vis_selection = function()
-    local _, ls, cs = unpack(vim.fn.getpos "v") -- visual selection start
-    local _, le, ce = unpack(vim.fn.getpos ".") -- visual selection end
-    return table.concat(vim.api.nvim_buf_get_text(0, ls - 1, cs - 1, le - 1, ce, {}))
+    local _, ls, cs = unpack(vim.fn.getpos "v") -- visual anchor
+    local _, le, ce = unpack(vim.fn.getpos ".") -- cursor position
+    -- Normalize: selection may be made backwards (cursor before anchor).
+    if ls > le or (ls == le and cs > ce) then
+      ls, cs, le, ce = le, ce, ls, cs
+    end
+    return table.concat(vim.api.nvim_buf_get_text(0, ls - 1, cs - 1, le - 1, ce, {}), "\n")
   end
 
   local builtin = require "telescope.builtin"
