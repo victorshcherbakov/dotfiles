@@ -59,9 +59,13 @@ install-fish: preinstall install-stow install-git install-curl
 	stow --target=${TARGET_DIR} fish
 
 .PHONY: install-nvim
-install-nvim: preinstall install-stow
+install-nvim: preinstall install-stow install-tree-sitter-cli
 	${SHELL} ${MKFILE_DIR}/script/nvim.sh
 	stow --target=${TARGET_DIR} nvim
+
+.PHONY: install-tree-sitter-cli
+install-tree-sitter-cli: preinstall
+	${SHELL} ${MKFILE_DIR}/script/tree_sitter_cli.sh
 
 .PHONY: install-stylua
 install-lsp-lua: preinstall
