@@ -46,7 +46,7 @@ fish/.config/fish/  →  ~/.config/fish/
 
 | Директория | Описание |
 |------------|----------|
-| `nvim/` | Neovim — Lazy.nvim, LSP, Telescope, Treesitter, blink.cmp |
+| `nvim/` | Neovim — Lazy.nvim, LSP, Telescope, Treesitter, blink.cmp, render-markdown |
 | `tmux/` | Tmux — TPM, nord-tmux, tmux-resurrect |
 | `fish/` | Fish shell — vi-mode, fzf, Oh-My-Fish |
 | `alacritty/` | Alacritty — JetBrainsMono Nerd Font, tokyonight |
