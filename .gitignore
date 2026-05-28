@@ -10,4 +10,25 @@ fish/.config/fish/conf.d/fish_frozen_theme.fish
 tmux/.tmux/resurrect
 tmux/.tmux/plugins
 
+claude/.claude/.credentials.json
+claude/.claude/history.jsonl
+claude/.claude/stats-cache.json
+claude/.claude/policy-limits.json
+claude/.claude/mcp-needs-auth-cache.json
+claude/.claude/.last-cleanup
+claude/.claude/*.backup.*
+claude/.claude/backups/
+claude/.claude/cache/
+claude/.claude/debug/
+claude/.claude/downloads/
+claude/.claude/file-history/
+claude/.claude/paste-cache/
+claude/.claude/plans/
+claude/.claude/plugins/
+claude/.claude/projects/
+claude/.claude/session-env/
+claude/.claude/sessions/
+claude/.claude/shell-snapshots/
+claude/.claude/tasks/
+
 .envrc

@@ -1,0 +1,22 @@
+{
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/victor/.claude/hooks/context-warn.py",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  },
+  "effortLevel": "xhigh",
+  "theme": "dark",
+  "autoCompactEnabled": false
+}

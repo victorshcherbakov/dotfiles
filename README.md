@@ -53,6 +53,7 @@ fish/.config/fish/  →  ~/.config/fish/
 | `lazygit/` | Lazygit — кастомные команды |
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
+| `claude/` | Claude Code — settings.json, commands, hooks, skills |
 
 ## Шрифты
 

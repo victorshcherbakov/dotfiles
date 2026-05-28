@@ -15,6 +15,7 @@ install: preinstall \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
+	install-claude \
 	install-lf \
 	install-fzf \
 	install-fd \
@@ -91,6 +92,11 @@ install-tmux: preinstall install-stow
 install-alacritty: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
+
+.PHONY: install-claude
+install-claude: preinstall install-stow
+	${SHELL} ${MKFILE_DIR}/script/claude.sh
+	stow --target=${TARGET_DIR} claude
 
 #.PHONY: install-i3
 #install-i3: preinstall install-stow
@@ -189,7 +195,7 @@ install-yay: preinstall
 
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit claude
 
 .PHONY: preinstall
 preinstall:
