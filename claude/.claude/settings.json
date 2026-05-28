@@ -9,7 +9,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "/home/victor/.claude/hooks/context-warn.py",
+            "command": "$HOME/.claude/hooks/context-warn.py",
+            "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/dotfiles-uncommitted-warn.py",
             "timeout": 5
           }
         ]
