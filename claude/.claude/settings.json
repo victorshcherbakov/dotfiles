@@ -1,8 +1,13 @@
 {
+  "model": "opus",
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  },
   "attribution": {
     "commit": "",
     "pr": ""
   },
+  "includeCoAuthoredBy": false,
   "hooks": {
     "Stop": [
       {
