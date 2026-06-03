@@ -24,6 +24,18 @@
           }
         ]
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cmd=$(jq -r '.tool_input.command // \"\"'); printf \"%s\" \"$cmd\" | grep -q \"git mv\" || exit 0; out=$(printf \"git mv: verify moved files show R (rename), not D+add:\\n\"; git status --short -uno; echo \"--- staged renames (diff --cached -M --diff-filter=R) ---\"; git diff --cached -M --diff-filter=R --name-status); jq -n --arg c \"$out\" '{hookSpecificOutput:{hookEventName:\"PostToolUse\",additionalContext:$c}}' ",
+            "timeout": 15
+          }
+        ]
+      }
     ]
   },
   "effortLevel": "xhigh",
