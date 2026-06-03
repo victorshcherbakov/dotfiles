@@ -1,26 +1,26 @@
 ---
 name: open-in-browser
-description: Открыть файл или URL в Google Chrome. Использовать, когда пользователь просит «открой в браузере», «покажи в браузере», «открой это в Chrome», "open in browser", "show in browser" — для любых локальных путей и URL. На этой машине xdg-open открывает .md/.html в текстовом редакторе, поэтому всегда использовать google-chrome-stable напрямую.
+description: Open a file or URL in Google Chrome. Use when the user asks «открой в браузере», «покажи в браузере», «открой это в Chrome», "open in browser", "show in browser" — for any local paths or URLs. On this machine xdg-open opens .md/.html in a text editor, so always use google-chrome-stable directly.
 ---
 
 # open-in-browser
 
-Открывает один или несколько файлов/URL в Google Chrome на этой машине.
+Opens one or more files/URLs in Google Chrome on this machine.
 
-## Аргументы
+## Arguments
 
-Один или несколько путей к файлам и/или URL, разделённых пробелами. Если аргументы не переданы — спросить у пользователя, что именно открыть, и не запускать ничего до ответа.
+One or more file paths and/or URLs separated by spaces. If no arguments are given, ask the user what to open and run nothing until they answer.
 
-## Команда
+## Command
 
-Запустить Chrome в фоне, чтобы не блокировать сессию:
+Launch Chrome in the background so the session isn't blocked:
 
     google-chrome-stable <args> > /dev/null 2>&1 & disown
 
-## Правила
+## Rules
 
-- Бинарник: `/usr/bin/google-chrome-stable`. **Не использовать** `google-chrome`, `chromium`, `xdg-open`, `firefox` — на этой машине они либо не установлены, либо открывают файлы не в браузере.
-- Локальные пути передавать как есть (Chrome сам обработает `file://`); URL передавать как есть.
-- Если путь содержит пробелы — заключить его в двойные кавычки внутри команды.
-- Не ждать завершения процесса (`& disown`) — Chrome остаётся висеть, сессия продолжается.
-- После запуска кратко подтвердить пользователю, что было открыто.
+- Binary: `/usr/bin/google-chrome-stable`. **Do not use** `google-chrome`, `chromium`, `xdg-open`, `firefox` — on this machine they're either not installed or don't open files in the browser.
+- Pass local paths as-is (Chrome handles `file://` itself); pass URLs as-is.
+- If a path contains spaces, wrap it in double quotes inside the command.
+- Don't wait for the process (`& disown`) — Chrome stays running, the session continues.
+- After launching, briefly confirm to the user what was opened.

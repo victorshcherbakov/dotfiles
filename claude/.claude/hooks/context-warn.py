@@ -63,8 +63,8 @@ def main() -> int:
         pass
 
     cwd_label = os.path.basename(payload.get("cwd") or os.getcwd()) or "?"
-    title = "Claude Code: контекст 250k"
-    body = f"Сессия {session_id[:8]} ({cwd_label}) достигла {total:_} токенов".replace("_", " ")
+    title = "Claude Code: context 250k"
+    body = f"Session {session_id[:8]} ({cwd_label}) reached {total:_} tokens".replace("_", " ")
 
     subprocess.Popen(
         ["notify-send", "-u", "critical", "-a", "Claude Code", title, body],

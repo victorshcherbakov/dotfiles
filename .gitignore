@@ -32,3 +32,6 @@ claude/.claude/shell-snapshots/
 claude/.claude/tasks/
 
 .envrc
+
+__pycache__/
+*.pyc

@@ -4,6 +4,14 @@ Rules in this file apply across all sessions and projects. Project-level
 `CLAUDE.md` files extend / override per-project; this file holds preferences
 that are universal to the user.
 
+## Config file language
+
+Everything under the dotfiles `claude/` package — skills, commands, hooks,
+and this file — is written in concise English to keep token cost low. The
+sole exception is Russian user-command trigger phrases (e.g. the «открой в
+браузере» list in `open-in-browser/SKILL.md`), which stay in Russian so the
+phrasing still matches when the user speaks Russian.
+
 ## Session restore one-liner
 
 When the user asks to save the current state so they can resume in a new
@@ -25,6 +33,6 @@ without recalling context by hand.
 TODO / NOTE / FIXME / HACK marker format:
 `KEYWORD(victor@unigine.com: DD/MM/YY): text`
 
-e.g. `TODO(victor@unigine.com: 03/06/26): и тут уже текст`
+e.g. `TODO(victor@unigine.com: 03/06/26): the message goes here`
 
 Author is the email, date is `DD/MM/YY`. Same shape for NOTE / FIXME / HACK.
