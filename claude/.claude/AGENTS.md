@@ -19,3 +19,12 @@ section, keep the one-liner in sync with it.
 
 Reason: the user wants a fast, copyable way to resume a task in a fresh chat
 without recalling context by hand.
+
+## Code conventions
+
+TODO / NOTE / FIXME / HACK marker format:
+`KEYWORD(victor@unigine.com: DD/MM/YY): text`
+
+e.g. `TODO(victor@unigine.com: 03/06/26): и тут уже текст`
+
+Author is the email, date is `DD/MM/YY`. Same shape for NOTE / FIXME / HACK.
