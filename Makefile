@@ -94,7 +94,7 @@ install-alacritty: preinstall install-stow
 	stow --target=${TARGET_DIR} alacritty
 
 .PHONY: install-claude
-install-claude: preinstall install-stow
+install-claude: preinstall install-stow install-curl
 	${SHELL} ${MKFILE_DIR}/script/claude.sh
 	stow --target=${TARGET_DIR} claude
 
