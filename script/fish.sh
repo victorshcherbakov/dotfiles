@@ -5,9 +5,14 @@ if [ ! -x "$(command -v git)" ]; then
     echo "'git' is required."
     exit 1
 fi
+# fc-cache (from fontconfig) is needed on all OSes to refresh the font cache;
+# install it here since it is not a Makefile prerequisite.
 if [ ! -x "$(command -v fc-cache)" ]; then
-    echo "'fc-cache' is required."
-    exit 1
+    if [[ -f "/etc/arch-release" ]]; then
+        sudo pacman -S --needed fontconfig || exit $?
+    else
+        sudo apt install fontconfig || exit $?
+    fi
 fi
 if [ ! -x "$(command -v curl)" ]; then
     echo "'curl' is required."

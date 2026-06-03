@@ -155,11 +155,11 @@ install-python-pip: preinstall install-python
 	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
 
 .PHONY: install-lsp-cmake
-install-lsp-cmake: preinstall install-yay
+install-lsp-cmake: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lsp_cmake.sh
 
 .PHONY: install-lsp-python
-install-lsp-python: preinstall install-yay
+install-lsp-python: preinstall
 	${SHELL} ${MKFILE_DIR}/script/lsp_python.sh
 
 .PHONY: install-lsp-bash
@@ -193,10 +193,6 @@ install-emoji-fonts: preinstall
 .PHONY: install-curl
 install-curl: preinstall
 	${SHELL} ${MKFILE_DIR}/script/curl.sh
-
-.PHONY: install-yay
-install-yay: preinstall
-	${SHELL} ${MKFILE_DIR}/script/yay.sh
 
 .PHONY: clean
 clean:

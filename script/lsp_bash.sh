@@ -1,13 +1,15 @@
 #!/bin/bash
 
+script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
 if [[ -f "/etc/arch-release" ]]; then
 	sudo pacman -S --needed bash-language-server
 	exit $?
 fi
 
+# Linux Mint: bash-language-server is distributed as a snap; ensure snapd first.
 if [ ! -x "$(command -v snap)" ]; then
-	echo "'snap' is required."
-	exit 1
+	/bin/bash "${script_dir}/snap.sh" || exit $?
 fi
 
 sudo snap install bash-language-server --classic
