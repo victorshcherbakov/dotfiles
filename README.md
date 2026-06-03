@@ -64,7 +64,7 @@ fish/.config/fish/  →  ~/.config/fish/
 
 **LSP-серверы:** clangd, gopls, pyright, lua_ls, bashls, ts_ls, cmake, csharp_ls
 
-**Утилиты:** ripgrep, fd, fzf, bat, ninja, cmake, mold, direnv, tree-sitter-cli
+**Утилиты:** ripgrep, fd, fzf, bat, jq, ninja, cmake, mold, direnv, tree-sitter-cli
 
 **Форматирование:** Stylua (Lua)
 

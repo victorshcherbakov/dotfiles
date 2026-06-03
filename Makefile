@@ -21,6 +21,7 @@ install: preinstall \
 	install-fd \
 	install-bat \
 	install-rg \
+	install-jq \
 	install-ninja \
 	install-lazygit \
 	install-direnv \
@@ -94,7 +95,7 @@ install-alacritty: preinstall install-stow
 	stow --target=${TARGET_DIR} alacritty
 
 .PHONY: install-claude
-install-claude: preinstall install-stow install-curl
+install-claude: preinstall install-stow install-curl install-jq
 	${SHELL} ${MKFILE_DIR}/script/claude.sh
 	stow --target=${TARGET_DIR} claude
 
@@ -123,6 +124,10 @@ install-bat: preinstall
 .PHONY: install-rg
 install-rg: preinstall
 	${SHELL} ${MKFILE_DIR}/script/rg.sh
+
+.PHONY: install-jq
+install-jq: preinstall
+	${SHELL} ${MKFILE_DIR}/script/jq.sh
 
 .PHONY: install-ninja
 install-ninja: preinstall
