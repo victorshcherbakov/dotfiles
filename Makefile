@@ -61,7 +61,7 @@ install-fish: preinstall install-stow install-git install-curl
 	stow --target=${TARGET_DIR} fish
 
 .PHONY: install-nvim
-install-nvim: preinstall install-stow install-curl install-jq install-tree-sitter-cli
+install-nvim: preinstall install-stow install-tree-sitter-cli
 	${SHELL} ${MKFILE_DIR}/script/nvim.sh
 	stow --target=${TARGET_DIR} nvim
 

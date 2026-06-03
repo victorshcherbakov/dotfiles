@@ -7,6 +7,12 @@ fi
 
 shell=/bin/bash
 script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+# Mint-only deps: curl + jq are used right below to query the GitHub API.
+# They are system-specific (Arch uses pacman above), so the script installs
+# them itself rather than declaring them as Makefile prerequisites.
+$shell "${script_dir}/install_by_package_manager.sh" curl jq || exit 1
+
 archive_name=$(curl -s -H 'Accept: application/json' \
 	https://api.github.com/repos/neovim/neovim/releases/latest \
 	| jq -r '.assets[].name | select(test("nvim-linux.*x86_64\\.tar\\.gz"))')
