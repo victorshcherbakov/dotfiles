@@ -28,6 +28,20 @@ section, keep the one-liner in sync with it.
 Reason: the user wants a fast, copyable way to resume a task in a fresh chat
 without recalling context by hand.
 
+## Shell environment (fish)
+
+The interactive shell is **fish** (`/usr/bin/fish`), not bash. Two recurring
+Bash-command traps:
+
+1. **Quote globs meant for the command.** Fish expands unquoted globs *before*
+   passing them on and, unlike bash, aborts with `no matches found` when the cwd
+   has no match. Quote them: `grep -rn --include='*.cpp'`, `find . -name '*.tsx'`.
+
+2. **Variables do NOT word-split.** `set FILES "a b c"; git add $FILES` passes a
+   single argument → `pathspec did not match`. Pass paths inline, or use a real
+   fish list (`set FILES a b c` — each path its own token); never a quoted,
+   space-joined variable, and don't rely on bash IFS splitting.
+
 ## Code conventions
 
 TODO / NOTE / FIXME / HACK marker format:
