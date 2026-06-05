@@ -28,19 +28,28 @@ section, keep the one-liner in sync with it.
 Reason: the user wants a fast, copyable way to resume a task in a fresh chat
 without recalling context by hand.
 
-## Shell environment (fish)
+## Shell environment (Bash tool runs zsh; login shell is fish)
 
-The interactive shell is **fish** (`/usr/bin/fish`), not bash. Two recurring
-Bash-command traps:
+The login/interactive shell is **fish** (`/usr/bin/fish`), but the Bash tool
+executes commands via **zsh** (fish is not POSIX-compatible, so the tool does
+not use it). Errors formatted `(eval):N: parse error near ...` come from zsh.
 
-1. **Quote globs meant for the command.** Fish expands unquoted globs *before*
+Write **bash/POSIX syntax** in tool commands — zsh accepts it. NEVER write
+fish syntax (`set x ...`, `if ... end`, `and`/`or`) in tool commands; a zsh
+parse error means a syntax slip in the command, not "should have been fish".
+
+Two recurring traps — zsh defaults that differ from bash:
+
+1. **Quote globs meant for the command.** zsh expands unquoted globs *before*
    passing them on and, unlike bash, aborts with `no matches found` when the cwd
    has no match. Quote them: `grep -rn --include='*.cpp'`, `find . -name '*.tsx'`.
 
-2. **Variables do NOT word-split.** `set FILES "a b c"; git add $FILES` passes a
-   single argument → `pathspec did not match`. Pass paths inline, or use a real
-   fish list (`set FILES a b c` — each path its own token); never a quoted,
-   space-joined variable, and don't rely on bash IFS splitting.
+2. **Variables do NOT word-split.** `FILES="a b c"; git add $FILES` passes a
+   single argument → `pathspec did not match`. Pass paths inline or loop over an
+   explicit list; don't rely on bash IFS splitting of unquoted variables.
+
+(The same two behaviors apply in fish interactively, so the advice holds there
+too.)
 
 ## Code conventions
 
