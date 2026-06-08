@@ -1,0 +1,6 @@
+#!/bin/sh
+# Re-link stow packages after a branch checkout or clone.
+# Args: $1 prev HEAD, $2 new HEAD, $3 = 1 for branch checkout, 0 for file checkout.
+# Skip per-file checkouts (`git checkout -- <file>`) to avoid needless restows.
+[ "$3" = "1" ] || exit 0
+exec "$(git rev-parse --show-toplevel)/.githooks/restow"

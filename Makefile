@@ -7,6 +7,7 @@ all: install
 
 install: preinstall \
 	install-git \
+	install-githooks \
 	install-svn \
 	install-stow \
 	install-fish \
@@ -42,6 +43,11 @@ install: preinstall \
 .PHONY: install-git
 install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
+
+# Enable the repo-tracked git hooks (auto-restow on commit/merge/checkout).
+.PHONY: install-githooks
+install-githooks:
+	git -C ${MKFILE_DIR} config core.hooksPath .githooks
 
 .PHONY: install-git-lfs
 install-git-lfs: preinstall

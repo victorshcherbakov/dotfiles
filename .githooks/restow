@@ -1,0 +1,22 @@
+#!/bin/sh
+# Re-link stow packages so files added/removed/renamed in the repo are
+# reflected in $HOME without a manual `stow`/`make` run.
+# Idempotent and never blocks the git operation (always exits 0).
+
+command -v stow >/dev/null 2>&1 || exit 0
+
+root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+cd "$root" || exit 0
+
+# Keep this list in sync with the `clean` target in the Makefile.
+for pkg in fish nvim gdb tmux alacritty lf lazygit claude; do
+    [ -d "$pkg" ] || continue
+    # Skip a package only if a real (non-stow) file shadows a managed path —
+    # a dry run that exits non-zero means restowing it would conflict.
+    # This keeps the hook quiet and never clobbers unmanaged files.
+    if stow -n --restow --target="$HOME" "$pkg" >/dev/null 2>&1; then
+        stow --restow --target="$HOME" "$pkg"
+    fi
+done
+
+exit 0
