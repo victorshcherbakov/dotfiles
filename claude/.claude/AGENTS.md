@@ -53,6 +53,14 @@ too.)
 
 ## Code conventions
 
+After every Edit/Write of a C++ file (`.h`/`.cpp`/`.cxx`/`.cc`), run
+`git clang-format` yourself on the changed lines of the files you just edited
+(it formats only lines changed vs the index). Do this manually — it replaces the
+old PostToolUse hook, which was removed because it also reformatted generated
+files. Scope it to the files you edited; never run it over generated output
+(e.g. codegen such as genapi `Gen*.cxx` / `Unigine*.h` facades) or over the whole
+tree (no broad `/format` walk across `git diff`).
+
 TODO / NOTE / FIXME / HACK marker format:
 `KEYWORD(victor@unigine.com: DD/MM/YY): text`
 

@@ -35,16 +35,6 @@
             "timeout": 15
           }
         ]
-      },
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "$HOME/.claude/hooks/clang-format-edited.py",
-            "timeout": 30
-          }
-        ]
       }
     ]
   },
