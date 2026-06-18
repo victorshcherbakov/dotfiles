@@ -86,7 +86,7 @@ sudo pacman -Rns $(pacman -Qtdq)
 
 | Директория | Описание |
 |------------|----------|
-| `nvim/` | Neovim — Lazy.nvim, LSP, Telescope, Treesitter, blink.cmp, render-markdown |
+| `nvim/` | Neovim — Lazy.nvim, LSP, Telescope, Treesitter, blink.cmp, render-markdown, gitsigns + Diffview |
 | `tmux/` | Tmux — TPM, nord-tmux, tmux-resurrect |
 | `fish/` | Fish shell — vi-mode, fzf, Oh-My-Fish |
 | `alacritty/` | Alacritty — JetBrainsMono Nerd Font, tokyonight |
