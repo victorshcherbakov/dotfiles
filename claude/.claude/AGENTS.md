@@ -67,3 +67,15 @@ TODO / NOTE / FIXME / HACK marker format:
 e.g. `TODO(victor@unigine.com: 03/06/26): the message goes here`
 
 Author is the email, date is `DD/MM/YY`. Same shape for NOTE / FIXME / HACK.
+
+Comments explain *why* (non-obvious invariant, rationale, gotcha), never *what*
+(the name and code already say that). A comment must stand alone for a reader of
+this file — no dependence on the chat / PR / commit that produced it.
+
+No provenance references in code. Phrases like "mirror of X", "like X does",
+"as in X", "modeled on X" document where the pattern came from, not what the
+reader needs here — that belongs in the commit message, not on the line.
+Cross-reference another symbol only when the reader must actually go there (a
+real coupling, a shared invariant, a gotcha). Deletion test: if removing the
+comment / reference loses nothing the reader must act on, it was noise — drop it.
+Prefer one line.
