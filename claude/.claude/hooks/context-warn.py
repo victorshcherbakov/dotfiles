@@ -11,7 +11,7 @@ import os
 import subprocess
 import sys
 
-THRESHOLD = 250_000
+THRESHOLD = 500_000
 SOUND = "/usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
 
 
@@ -63,7 +63,7 @@ def main() -> int:
         pass
 
     cwd_label = os.path.basename(payload.get("cwd") or os.getcwd()) or "?"
-    title = "Claude Code: context 250k"
+    title = f"Claude Code: context {THRESHOLD // 1000}k"
     body = f"Session {session_id[:8]} ({cwd_label}) reached {total:_} tokens".replace("_", " ")
 
     subprocess.Popen(
