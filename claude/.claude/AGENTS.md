@@ -79,3 +79,22 @@ Cross-reference another symbol only when the reader must actually go there (a
 real coupling, a shared invariant, a gotcha). Deletion test: if removing the
 comment / reference loses nothing the reader must act on, it was noise — drop it.
 Prefer one line.
+
+## Concurrent sessions share one working tree and index
+
+A second Claude session may run in the same repo, in the same working tree,
+against the same git index — there is one index per repo, so the other session's
+`git add` stages into the index you also see. When another session has staged
+WIP:
+
+- `git add <your files>` + bare `git commit` commits the **entire** index — it
+  sweeps the other session's staged files into your commit under your message.
+  Commit only your paths: `git commit -- <explicit paths>` (a partial commit
+  leaves the rest of the index staged and untouched).
+- Before any commit, run `git diff --cached --name-only` and confirm only your
+  files are listed.
+- `git clang-format` with no pathspec reformats every staged file, corrupting
+  the other session's files in the tree. Always scope it: `git clang-format -- <your paths>`.
+- To undo a commit that swept up foreign WIP: `git reset --soft HEAD~1` (keeps
+  the index; the working tree is never touched, so no content is lost), then
+  re-commit only your paths via pathspec.
