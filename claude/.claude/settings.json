@@ -38,6 +38,10 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "$HOME/.claude/hooks/statusline.py"
+  },
   "effortLevel": "xhigh",
   "theme": "dark",
   "autoCompactEnabled": false
