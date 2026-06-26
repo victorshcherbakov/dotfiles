@@ -12,6 +12,12 @@ sole exception is Russian user-command trigger phrases (e.g. the «открой 
 браузере» list in `open-in-browser/SKILL.md`), which stay in Russian so the
 phrasing still matches when the user speaks Russian.
 
+## Presenting options in text
+
+When you offer me choices in plain prose (not via the interactive question tool),
+number them (1., 2., 3.) — never letter them (a/b/c). The interactive question tool
+renders its own UI and is exempt.
+
 ## Session restore one-liner
 
 When the user asks to save the current state so they can resume in a new
