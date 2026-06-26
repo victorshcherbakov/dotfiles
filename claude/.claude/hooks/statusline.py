@@ -10,10 +10,20 @@ import json
 import os
 import subprocess
 import sys
+import time
 
 # Color thresholds for the context figure (tokens).
 YELLOW_AT = 400_000
 RED_AT = 700_000
+
+# Cached machine-wide "Current session" usage percent (5h rolling limit), refreshed out of
+# band by usage-refresh.sh - too slow (~2s) to query inline on every status-line tick.
+USAGE_CACHE = os.path.expanduser("~/.claude/usage-session-cache")
+USAGE_REFRESH = os.path.expanduser("~/.claude/hooks/usage-refresh.sh")
+USAGE_TTL = 120  # seconds before the cached percent is considered stale and a refresh fires
+# Color thresholds for the session-usage percent.
+USAGE_YELLOW_AT = 60
+USAGE_RED_AT = 85
 
 
 def last_usage(transcript_path):
@@ -66,6 +76,28 @@ def human(n):
     return f"{round(n / 1000)}k" if n >= 1000 else str(n)
 
 
+def session_usage():
+    # Returns the cached percent (or None) and fires a background refresh when the cache is
+    # missing or older than the TTL. The refresh detaches and never blocks the status line;
+    # its own flock collapses concurrent triggers into one.
+    pct = None
+    fresh = False
+    try:
+        pct = int(open(USAGE_CACHE).read().strip())
+        fresh = (time.time() - os.path.getmtime(USAGE_CACHE)) < USAGE_TTL
+    except (OSError, ValueError):
+        pass
+    if not fresh and os.access(USAGE_REFRESH, os.X_OK):
+        try:
+            subprocess.Popen(
+                [USAGE_REFRESH],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True,
+            )
+        except OSError:
+            pass
+    return pct
+
+
 def git_branch(cwd):
     try:
         result = subprocess.run(
@@ -100,6 +132,14 @@ def main():
         color = 31 if tokens >= RED_AT else 33 if tokens >= YELLOW_AT else 32
         ctx = f"\033[{color}mctx {human(tokens)}\033[0m"
     parts.append(ctx)
+
+    pct = session_usage()
+    if pct is None:
+        sess = "sess -"
+    else:
+        color = 31 if pct >= USAGE_RED_AT else 33 if pct >= USAGE_YELLOW_AT else 32
+        sess = f"\033[{color}msess {pct}%\033[0m"
+    parts.append(sess)
 
     print(" | ".join(parts))
 
