@@ -4,6 +4,7 @@ local M = {
   keys = {
     "<Leader>ho",
     "<Leader>hc",
+    "<Leader>hm",
     "<Leader>hf",
     "<Leader>hF",
     "<Leader>hq",
@@ -34,6 +35,8 @@ function M.config()
     { desc = "Diffview: working tree vs index" })
   km.map("n", "<Leader>hc", "<Cmd>DiffviewOpen HEAD~1<CR>",
     { desc = "Diffview: last commit" })
+  km.map("n", "<Leader>hm", "<Cmd>DiffviewOpen master<CR>",
+    { desc = "Diffview: master vs working tree" })
   km.map("n", "<Leader>hf", "<Cmd>DiffviewFileHistory %<CR>",
     { desc = "Diffview: current file history" })
   km.map("n", "<Leader>hF", "<Cmd>DiffviewFileHistory<CR>",
