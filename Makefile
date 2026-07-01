@@ -38,7 +38,8 @@ install: preinstall \
 	install-meld \
 	install-remmina \
 	install-lsp-csharp \
-	install-emoji-fonts
+	install-emoji-fonts \
+	install-grub-hook
 
 .PHONY: install-git
 install-git: preinstall
@@ -195,6 +196,12 @@ install-remmina: preinstall
 .PHONY: install-emoji-fonts
 install-emoji-fonts: preinstall
 	${SHELL} ${MKFILE_DIR}/script/emoji_fonts.sh
+
+# Arch-only pacman hook regenerating grub.cfg after a kernel change.
+# The script no-ops on non-Arch systems, so it's safe in the full install list.
+.PHONY: install-grub-hook
+install-grub-hook: preinstall
+	${SHELL} ${MKFILE_DIR}/script/grub_hook.sh
 
 .PHONY: install-curl
 install-curl: preinstall
