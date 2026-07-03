@@ -1,8 +1,4 @@
 {
-  "model": "opus",
-  "enabledPlugins": {
-    "pyright-lsp@claude-plugins-official": true
-  },
   "attribution": {
     "commit": "",
     "pr": ""
@@ -42,7 +38,11 @@
     "type": "command",
     "command": "$HOME/.claude/hooks/statusline.py"
   },
+  "enabledPlugins": {
+    "pyright-lsp@claude-plugins-official": true
+  },
   "effortLevel": "xhigh",
+  "language": "russian",
   "theme": "dark",
   "autoCompactEnabled": false
 }

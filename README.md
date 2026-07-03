@@ -41,7 +41,13 @@ tmux/.config/tmux/  →  ~/.config/tmux/
 fish/.config/fish/  →  ~/.config/fish/
 ```
 
-Скрипты установки в `script/` устанавливают сами программы через пакетный менеджер или GitHub Releases.
+Каждый таргет `make install-*` запускает скрипт установки из `script/*.sh`, а затем `stow --target=$HOME <dir>` для инструментов с конфигурационными директориями. `script/preinstall.sh` определяет ОС — Arch/Manjaro (pacman/yay) или Linux Mint 22 (apt) — и запускает обновление системы. Общие хелперы:
+
+- `install_by_package_manager.sh` — обёртка над apt для установки системных пакетов
+- `install_from_github_archive.sh` — скачивает последний tar.gz-релиз с GitHub в `~/.local/bin/`
+- `install_from_github_deb.sh` — скачивает последний .deb-релиз с GitHub и устанавливает его
+
+Бинарники, устанавливаемые не через пакетный менеджер, кладутся в `~/.local/bin/`.
 
 ### Авто-restow через git-хуки
 
@@ -101,6 +107,16 @@ sudo pacman -Rns $(pacman -Qtdq)
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
 | `claude/` | Claude Code — settings.json, commands, hooks, skills |
+
+### Neovim
+
+Точка входа `nvim/.config/nvim/init.lua` загружает модули по порядку: `options` → `mappings` → `plugin` → `sinbizkit.lsp`.
+
+- **Плагины:** Lazy.nvim, bootstrap в `lua/plugin.lua`; спецификации в `lua/plugins/` (один файл на плагин или группу).
+- **LSP:** современный API `vim.lsp.config()` + `vim.lsp.enable()` (Neovim 0.11+), а НЕ устаревший `require('lspconfig')`. Серверы настроены в `lua/plugins/lspconfig.lua`.
+- **Форматирование:** Stylua через conform.nvim; у lua_ls форматирование отключено, чтобы избежать конфликтов.
+- **Кастомные модули `lua/sinbizkit/`:** `lsp/mappings.lua` — LSP-биндинги при подключении к буферу, `keymap.lua` — хелпер для определения клавиш, `telescope/vimconf_picker.lua` — кастомный Telescope picker, `snippets/` — LuaSnip-сниппеты для cpp/go/lua.
+- **Отступы по языкам:** переопределения в `nvim/.config/nvim/after/ftplugin/`.
 
 ## Шрифты
 
