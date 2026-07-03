@@ -111,7 +111,9 @@ sudo pacman -Rns $(pacman -Qtdq)
 
 **LSP-серверы:** clangd, gopls, pyright, lua_ls, bashls, ts_ls, cmake, csharp_ls
 
-**Утилиты:** ripgrep, fd, fzf, bat, jq, ninja, cmake, mold, direnv, tree-sitter-cli
+**Утилиты:** ripgrep, fd, fzf, bat, jq, xclip, ninja, cmake, mold, direnv, tree-sitter-cli
+
+`xclip` — X11-клипборд для tmux и Claude Code (вставка картинок по Ctrl+V); при переезде на Wayland в `script/xclip.sh` добавить `wl-clipboard`.
 
 **Форматирование:** Stylua (Lua)
 

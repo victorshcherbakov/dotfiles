@@ -23,6 +23,7 @@ install: preinstall \
 	install-bat \
 	install-rg \
 	install-jq \
+	install-xclip \
 	install-ninja \
 	install-lazygit \
 	install-direnv \
@@ -89,10 +90,7 @@ install-gdb: install-stow install-git install-svn
 	stow --target=${TARGET_DIR} gdb
 
 .PHONY: install-tmux
-install-tmux: preinstall install-stow
-	@echo "Install (or write a script) a clipboard helper"
-	@echo "either Wayland: wl-copy (package: wl-clipboard)"
-	@echo "or X11: xclip (or xsel)"
+install-tmux: preinstall install-stow install-xclip
 	${SHELL} ${MKFILE_DIR}/script/tmux.sh
 	stow --target=${TARGET_DIR} tmux
 
@@ -102,7 +100,7 @@ install-alacritty: preinstall install-stow
 	stow --target=${TARGET_DIR} alacritty
 
 .PHONY: install-claude
-install-claude: preinstall install-stow install-curl install-jq
+install-claude: preinstall install-stow install-curl install-jq install-xclip
 	${SHELL} ${MKFILE_DIR}/script/claude.sh
 	stow --target=${TARGET_DIR} claude
 
@@ -135,6 +133,10 @@ install-rg: preinstall
 .PHONY: install-jq
 install-jq: preinstall
 	${SHELL} ${MKFILE_DIR}/script/jq.sh
+
+.PHONY: install-xclip
+install-xclip: preinstall
+	${SHELL} ${MKFILE_DIR}/script/xclip.sh
 
 .PHONY: install-ninja
 install-ninja: preinstall
