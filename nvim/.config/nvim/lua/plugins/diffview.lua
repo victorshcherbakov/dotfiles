@@ -20,6 +20,9 @@ function M.config()
       default = { layout = "diff2_horizontal" },
       file_history = { layout = "diff2_horizontal" },
     },
+    file_panel = {
+      win_config = { width = 70 },
+    },
     keymaps = {
       file_history_panel = {
         -- Override the default 'o' (select_entry, still on <cr>/l) so it opens the
