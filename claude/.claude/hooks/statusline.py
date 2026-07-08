@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Claude Code status line: working dir, git branch, model, and context tokens used.
+"""Claude Code status line: working dir, git branch, model, context tokens, session usage.
+
+Trailing fields: `sess N%` is the 5h-limit usage percent (cached, refreshed out of band by
+usage-refresh.sh), and `reset Xh YYm` counts down to when that limit resets - a live figure
+derived from a cached epoch, so it ticks down between the ~120s cache refreshes.
 
 Reads the status-line payload (JSON) from stdin, tails the session transcript for the
 latest message.usage, and prints `input + cache_read + cache_creation` tokens - the same
@@ -19,6 +23,8 @@ RED_AT = 700_000
 # Cached machine-wide "Current session" usage percent (5h rolling limit), refreshed out of
 # band by usage-refresh.sh - too slow (~2s) to query inline on every status-line tick.
 USAGE_CACHE = os.path.expanduser("~/.claude/usage-session-cache")
+# Epoch of the current session's 5h-limit reset, refreshed alongside USAGE_CACHE.
+USAGE_RESET_CACHE = os.path.expanduser("~/.claude/usage-session-reset")
 USAGE_REFRESH = os.path.expanduser("~/.claude/hooks/usage-refresh.sh")
 USAGE_TTL = 120  # seconds before the cached percent is considered stale and a refresh fires
 # Color thresholds for the session-usage percent.
@@ -98,6 +104,22 @@ def session_usage():
     return pct
 
 
+def session_reset():
+    # Seconds until the session limit resets (from the epoch cache), or None if unknown.
+    # Clamped at 0: a slightly stale cache can put the reset just in the past between the
+    # 120s refreshes, and a negative countdown would read as nonsense.
+    try:
+        epoch = int(open(USAGE_RESET_CACHE).read().strip())
+    except (OSError, ValueError):
+        return None
+    return max(0, epoch - int(time.time()))
+
+
+def human_duration(secs):
+    hours, minutes = secs // 3600, (secs % 3600) // 60
+    return f"{hours}h{minutes:02d}m" if hours else f"{minutes}m"
+
+
 def git_branch(cwd):
     try:
         result = subprocess.run(
@@ -140,6 +162,9 @@ def main():
         color = 31 if pct >= USAGE_RED_AT else 33 if pct >= USAGE_YELLOW_AT else 32
         sess = f"\033[{color}msess {pct}%\033[0m"
     parts.append(sess)
+
+    remaining = session_reset()
+    parts.append("reset -" if remaining is None else f"reset {human_duration(remaining)}")
 
     print(" | ".join(parts))
 

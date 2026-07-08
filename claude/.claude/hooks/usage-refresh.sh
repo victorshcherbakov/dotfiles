@@ -10,6 +10,7 @@
 set -u
 
 CACHE="$HOME/.claude/usage-session-cache"
+RESET_CACHE="$HOME/.claude/usage-session-reset"
 LOCK="$HOME/.claude/usage-session-cache.lock"
 
 exec 9>"$LOCK" || exit 0
@@ -22,5 +23,22 @@ for transcript in "$HOME"/.claude/projects/*/"$uuid".jsonl; do
 	[ -e "$transcript" ] && rm -f "$transcript"
 done
 
-pct=$(printf '%s\n' "$out" | grep -m1 -oE 'Current session: [0-9]+%' | grep -oE '[0-9]+')
+# "Current session: 64% used · resets Jul 8, 1:39pm (Asia/Tomsk)"
+line=$(printf '%s\n' "$out" | grep -m1 'Current session:')
+pct=$(printf '%s\n' "$line" | grep -oE '[0-9]+%' | grep -oE '[0-9]+')
 [ -n "$pct" ] && printf '%s\n' "$pct" >"$CACHE"
+
+# Store the reset moment as an epoch so the status line can render a live countdown
+# without re-querying. `date` is fed the displayed TZ and a normalized string
+# ("Jul 8, 1:39pm" -> "Jul 8 1:39 pm"); the reset is always <5h out, so an epoch far in
+# the past means a Dec->Jan year rollover the string omits - reparse pinned to next year.
+reset=$(printf '%s\n' "$line" | sed -n 's/.*resets //p')
+if [ -n "$reset" ]; then
+	tz=$(printf '%s' "$reset" | grep -oE '\([^)]+\)' | tr -d '()')
+	when=$(printf '%s' "$reset" | sed -E 's/ *\([^)]*\)//; s/,//; s/([0-9])(am|pm)/\1 \2/')
+	epoch=$(TZ="$tz" date -d "$when" +%s 2>/dev/null)
+	if [ -n "$epoch" ] && [ "$epoch" -lt "$(( $(date +%s) - 86400 ))" ]; then
+		epoch=$(TZ="$tz" date -d "$when $(( $(date +%Y) + 1 ))" +%s 2>/dev/null)
+	fi
+	[ -n "$epoch" ] && printf '%s\n' "$epoch" >"$RESET_CACHE"
+fi
