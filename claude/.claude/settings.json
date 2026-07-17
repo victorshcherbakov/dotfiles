@@ -41,8 +41,13 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true
   },
-  "effortLevel": "xhigh",
   "language": "russian",
+  "effortLevel": "xhigh",
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "theme": "dark",
-  "autoCompactEnabled": false
+  "autoCompactEnabled": false,
+  "voiceEnabled": true
 }
