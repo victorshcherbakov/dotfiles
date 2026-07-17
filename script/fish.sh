@@ -18,6 +18,16 @@ if [ ! -x "$(command -v curl)" ]; then
     echo "'curl' is required."
     exit 1
 fi
+# config.fish re-activates freshly launched Alacritty windows via xdotool to
+# work around a Muffin >= 6.6.0 focus regression; install it here since it is
+# not a Makefile prerequisite. X11-only.
+if [ ! -x "$(command -v xdotool)" ]; then
+    if [[ -f "/etc/arch-release" ]]; then
+        sudo pacman -S --needed xdotool || exit $?
+    else
+        sudo apt install xdotool || exit $?
+    fi
+fi
 
 echo "Fonts installation"
 FONTS_DIR=${HOME}/.local/share/fonts/ttf/nerd-fonts/JetBrainsMono

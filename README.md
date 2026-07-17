@@ -127,9 +127,11 @@ sudo pacman -Rns $(pacman -Qtdq)
 
 **LSP-серверы:** clangd, gopls, pyright, lua_ls, bashls, ts_ls, cmake, csharp_ls
 
-**Утилиты:** ripgrep, fd, fzf, bat, jq, xclip, ninja, cmake, mold, direnv, tree-sitter-cli
+**Утилиты:** ripgrep, fd, fzf, bat, jq, xclip, xdotool, ninja, cmake, mold, direnv, tree-sitter-cli
 
 `xclip` — X11-клипборд для tmux и Claude Code (вставка картинок по Ctrl+V); при переезде на Wayland в `script/xclip.sh` добавить `wl-clipboard`.
+
+`xdotool` — X11-автоматизация. Используется в `config.fish` как обход регрессии Muffin ≥ 6.6.0 (WM в Cinnamon): новое окно Alacritty поднимается наверх, но без клавиатурного фокуса, и shell не принимает ввод, пока не кликнешь внутрь. Хук в `config.fish` повторно активирует окно по `$ALACRITTY_WINDOW_ID`. Ставится в `script/fish.sh`; X11-only, для Wayland потребуется аналог (`ydotool`/`wtype`).
 
 **Форматирование:** Stylua (Lua)
 
