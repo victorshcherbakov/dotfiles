@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Refresh the cached "Current session" usage percentage shown in the status line.
+# Refresh the cached usage percentages shown in the status line: "Current session" (5h
+# rolling limit) and "Current week (all models)".
 #
 # `/usage` is only reachable as a slash command, so we run it headlessly. It makes no
 # model call (intercepted before the API), and we force a known --session-id so its
@@ -11,6 +12,7 @@ set -u
 
 CACHE="$HOME/.claude/usage-session-cache"
 RESET_CACHE="$HOME/.claude/usage-session-reset"
+WEEK_CACHE="$HOME/.claude/usage-week-cache"
 LOCK="$HOME/.claude/usage-session-cache.lock"
 
 exec 9>"$LOCK" || exit 0
@@ -42,3 +44,9 @@ if [ -n "$reset" ]; then
 	fi
 	[ -n "$epoch" ] && printf '%s\n' "$epoch" >"$RESET_CACHE"
 fi
+
+# "Current week (all models): 7% used · resets Aug 13, 9pm (Asia/Tomsk)". The output also
+# carries a per-model week line ("Current week (Fable): ...") - match "all models" so the
+# figure stays the overall weekly limit whatever model the refresh itself ran on.
+week=$(printf '%s\n' "$out" | grep -m1 'Current week (all models):' | grep -oE '[0-9]+%' | grep -oE '[0-9]+')
+[ -n "$week" ] && printf '%s\n' "$week" >"$WEEK_CACHE"

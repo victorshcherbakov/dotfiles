@@ -2,8 +2,9 @@
 """Claude Code status line: working dir, git branch, model, context tokens, session usage.
 
 Trailing fields: `sess N%` is the 5h-limit usage percent (cached, refreshed out of band by
-usage-refresh.sh), and `reset Xh YYm` counts down to when that limit resets - a live figure
-derived from a cached epoch, so it ticks down between the ~120s cache refreshes.
+usage-refresh.sh), `reset Xh YYm` counts down to when that limit resets - a live figure
+derived from a cached epoch, so it ticks down between the ~120s cache refreshes - and
+`week N%` is the weekly all-models limit from the same refresh.
 
 Reads the status-line payload (JSON) from stdin, tails the session transcript for the
 latest message.usage, and prints `input + cache_read + cache_creation` tokens - the same
@@ -25,9 +26,11 @@ RED_AT = 700_000
 USAGE_CACHE = os.path.expanduser("~/.claude/usage-session-cache")
 # Epoch of the current session's 5h-limit reset, refreshed alongside USAGE_CACHE.
 USAGE_RESET_CACHE = os.path.expanduser("~/.claude/usage-session-reset")
+# Weekly (all models) usage percent, written by the same refresh as USAGE_CACHE.
+USAGE_WEEK_CACHE = os.path.expanduser("~/.claude/usage-week-cache")
 USAGE_REFRESH = os.path.expanduser("~/.claude/hooks/usage-refresh.sh")
 USAGE_TTL = 120  # seconds before the cached percent is considered stale and a refresh fires
-# Color thresholds for the session-usage percent.
+# Color thresholds for the usage percents.
 USAGE_YELLOW_AT = 60
 USAGE_RED_AT = 85
 
@@ -104,6 +107,22 @@ def session_usage():
     return pct
 
 
+def week_usage():
+    # Cached weekly percent, or None. No refresh trigger of its own: the same run of
+    # usage-refresh.sh that session_usage() fires writes this cache too.
+    try:
+        return int(open(USAGE_WEEK_CACHE).read().strip())
+    except (OSError, ValueError):
+        return None
+
+
+def usage_field(label, pct):
+    if pct is None:
+        return f"{label} -"
+    color = 31 if pct >= USAGE_RED_AT else 33 if pct >= USAGE_YELLOW_AT else 32
+    return f"\033[{color}m{label} {pct}%\033[0m"
+
+
 def session_reset():
     # Seconds until the session limit resets (from the epoch cache), or None if unknown.
     # Clamped at 0: a slightly stale cache can put the reset just in the past between the
@@ -155,16 +174,12 @@ def main():
         ctx = f"\033[{color}mctx {human(tokens)}\033[0m"
     parts.append(ctx)
 
-    pct = session_usage()
-    if pct is None:
-        sess = "sess -"
-    else:
-        color = 31 if pct >= USAGE_RED_AT else 33 if pct >= USAGE_YELLOW_AT else 32
-        sess = f"\033[{color}msess {pct}%\033[0m"
-    parts.append(sess)
+    parts.append(usage_field("sess", session_usage()))
 
     remaining = session_reset()
     parts.append("reset -" if remaining is None else f"reset {human_duration(remaining)}")
+
+    parts.append(usage_field("week", week_usage()))
 
     print(" | ".join(parts))
 
