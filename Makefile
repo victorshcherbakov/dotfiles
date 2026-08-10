@@ -46,10 +46,14 @@ install: preinstall \
 install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
 
-# Enable the repo-tracked git hooks (auto-restow on commit/merge/checkout).
+# Enable the repo-tracked git hooks (auto-restow, pre-commit privacy scan).
+# The site-specific blocklist is seeded from the example on first install; it
+# lives inside .git so the public repo never carries the strings it blocks.
 .PHONY: install-githooks
 install-githooks:
 	git -C ${MKFILE_DIR} config core.hooksPath .githooks
+	@cd ${MKFILE_DIR} && p=$$(git rev-parse --git-path secret-patterns) && \
+		{ [ -f "$$p" ] || cp .githooks/secret-patterns.example "$$p"; }
 
 .PHONY: install-git-lfs
 install-git-lfs: preinstall
