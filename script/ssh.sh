@@ -7,6 +7,14 @@ echo "  The command:"
 echo "  ssh-keygen -t ed25519 -C your_email@example.com"
 echo "2. Create ~/.ssh/config file"
 cat ./templates/ssh_config
+
+# Host blocks for private hosts live outside this public repo.
+private_ssh="${PRIVATE_DOTFILES_DIR:-${HOME}/Yandex.Disk/private/dotfiles}/ssh_config_private"
+if [ -r "${private_ssh}" ]; then
+	cat "${private_ssh}"
+else
+	echo "  (private host blocks not found at ${private_ssh} - run 'make install-private')"
+fi
 echo "3. Start the ssh-agent"
 echo "4. Add your *.pub key to the GitHub account - https://github.com/settings/keys"
 echo "  For the problem 'Bad owner or permissions on ssh config file' - https://superuser.com/questions/1212402/bad-owner-or-permissions-on-ssh-config-file"

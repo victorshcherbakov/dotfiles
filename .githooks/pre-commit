@@ -7,7 +7,9 @@
 # tokens, email addresses, RFC1918 hosts) live here. Site-specific strings - an
 # employer domain, an internal host, an issue-tracker prefix - belong in
 # $GIT_DIR/secret-patterns, which git never tracks, so this public file does not
-# spell out the very words it exists to hide. Format there: one extended regex
+# spell out the very words it exists to hide. `make install-private` links it to
+# the private dotfiles directory; without it the commit is refused, because a
+# half-checked commit reads as a checked one. Format there: one extended regex
 # per line, optionally "<regex><TAB><label>"; blank lines and # comments ignored.
 # Those are POSIX EREs as awk understands them - `\b` is not a word boundary
 # there; write `(^|[^A-Za-z0-9])word($|[^A-Za-z0-9])` when a boundary matters.
@@ -20,7 +22,16 @@ diff=$(git diff --cached -U0 --diff-filter=ACMR 2>/dev/null) || exit 0
 [ -n "$diff" ] || exit 0
 
 site=$(git rev-parse --git-path secret-patterns 2>/dev/null) || site=""
-[ -n "$site" ] && [ -f "$site" ] || site=/dev/null
+if [ -z "$site" ] || [ ! -r "$site" ]; then
+	cat >&2 <<'EOF'
+
+pre-commit: the site-specific blocklist is missing ($GIT_DIR/secret-patterns,
+normally a symlink into the private dotfiles directory). Only generic patterns
+would be checked, so this commit is refused rather than half-checked.
+Run `make install-private`, or `git commit --no-verify` to commit anyway.
+EOF
+	exit 1
+fi
 
 printf '%s\n' "$diff" | awk -v site="$site" '
 function add(re, label) { n++; pat[n] = re; desc[n] = label }

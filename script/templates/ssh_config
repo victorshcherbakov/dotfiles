@@ -3,8 +3,5 @@ Host github.com
   PreferredAuthentications publickey
   IdentityFile ~/.ssh/id_ed25519.pub
 
-# Private GitLab instance
-Host git.unigine.com
-  PreferredAuthentications publickey
-  IdentityFile ~/.ssh/id_ed25519_another_one.pub
-
+# Host blocks for private hosts are not kept in this public repo; they come from
+# ssh_config_private in the private dotfiles directory (see script/ssh.sh).

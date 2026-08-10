@@ -47,13 +47,17 @@ install-git: preinstall
 	${SHELL} ${MKFILE_DIR}/script/git.sh
 
 # Enable the repo-tracked git hooks (auto-restow, pre-commit privacy scan).
-# The site-specific blocklist is seeded from the example on first install; it
-# lives inside .git so the public repo never carries the strings it blocks.
+# The scan needs the blocklist that install-private links in.
 .PHONY: install-githooks
 install-githooks:
 	git -C ${MKFILE_DIR} config core.hooksPath .githooks
-	@cd ${MKFILE_DIR} && p=$$(git rev-parse --git-path secret-patterns) && \
-		{ [ -f "$$p" ] || cp .githooks/secret-patterns.example "$$p"; }
+
+# Link the private, machine-local files from Yandex.Disk into place. Kept out of
+# `install`: on a fresh machine the disk may not be synced yet, and this target
+# fails hard by design rather than linking half of it.
+.PHONY: install-private
+install-private:
+	${SHELL} ${MKFILE_DIR}/script/private_links.sh
 
 .PHONY: install-git-lfs
 install-git-lfs: preinstall

@@ -4,6 +4,13 @@ Rules in this file apply across all sessions and projects. Project-level
 `CLAUDE.md` files extend / override per-project; this file holds preferences
 that are universal to the user.
 
+Rules that name an employer, an internal host or a private tool live outside
+this public repo, on Yandex.Disk, and arrive through the import below. It is a
+symlink created by `make install-private`; when it is missing the import simply
+resolves to nothing, so anything that depends on it says so explicitly here.
+
+@~/.claude/private.md
+
 ## Config file language
 
 Everything under the dotfiles `claude/` package — skills, commands, hooks,
@@ -64,16 +71,17 @@ run `git clang-format -- <files you edited>` (formats only changed lines),
 re-stage those files, then commit. Do NOT format after every Edit/Write —
 only at commit time. Do this manually — it replaces the old PostToolUse hook,
 which was removed because it also reformatted generated files. Scope it to
-the files you edited; never run it over generated output (e.g. codegen such
-as genapi `Gen*.cxx` / `Unigine*.h` facades) or over the whole tree (no broad
-`/format` walk across `git diff`).
+the files you edited; never run it over generated output (the private import
+names the codegen file patterns) or over the whole tree (no broad `/format` walk
+across `git diff`).
 
 TODO / NOTE / FIXME / HACK marker format:
-`KEYWORD(victor@unigine.com: DD/MM/YY): text`
+`KEYWORD(<author-email>: DD/MM/YY): text`
 
-e.g. `TODO(victor@unigine.com: 03/06/26): the message goes here`
+e.g. `TODO(<author-email>: 03/06/26): the message goes here`
 
-Author is the email, date is `DD/MM/YY`. Same shape for NOTE / FIXME / HACK.
+Date is `DD/MM/YY`; the author email comes from the private import — ask if it
+did not load. Same shape for NOTE / FIXME / HACK.
 
 Comments explain *why* (non-obvious invariant, rationale, gotcha), never *what*
 (the name and code already say that). A comment must stand alone for a reader of
