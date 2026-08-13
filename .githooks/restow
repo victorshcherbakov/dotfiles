@@ -9,7 +9,7 @@ root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
 cd "$root" || exit 0
 
 # Keep this list in sync with the `clean` target in the Makefile.
-for pkg in fish nvim gdb tmux alacritty lf lazygit claude; do
+for pkg in fish nvim gdb tmux alacritty lf lazygit claude sublime; do
     [ -d "$pkg" ] || continue
     # Skip a package only if a real (non-stow) file shadows a managed path —
     # a dry run that exits non-zero means restowing it would conflict.

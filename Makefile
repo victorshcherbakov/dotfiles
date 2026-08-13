@@ -16,6 +16,7 @@ install: preinstall \
 	install-gdb \
 	install-tmux \
 	install-alacritty \
+	install-sublime \
 	install-claude \
 	install-lf \
 	install-fzf \
@@ -106,6 +107,11 @@ install-tmux: preinstall install-stow install-xclip
 install-alacritty: preinstall install-stow
 	${SHELL} ${MKFILE_DIR}/script/alacritty.sh
 	stow --target=${TARGET_DIR} alacritty
+
+.PHONY: install-sublime
+install-sublime: preinstall install-stow
+	${SHELL} ${MKFILE_DIR}/script/sublime.sh
+	stow --target=${TARGET_DIR} sublime
 
 .PHONY: install-claude
 install-claude: preinstall install-stow install-curl install-jq install-xclip
@@ -219,7 +225,7 @@ install-curl: preinstall
 
 .PHONY: clean
 clean:
-	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit claude
+	stow --delete --target=${TARGET_DIR} fish nvim gdb tmux alacritty lf lazygit claude sublime
 
 .PHONY: preinstall
 preinstall:

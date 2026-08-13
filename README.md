@@ -136,6 +136,23 @@ sudo pacman -Rns $(pacman -Qtdq)
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
 | `claude/` | Claude Code — settings.json, commands, hooks, skills |
+| `sublime/` | Sublime Text — плагин авто-reveal текущего файла в сайдбаре |
+
+### Sublime Text
+
+Пакет содержит один плагин — `Packages/User/reveal_in_side_bar.py`. Sublime умеет
+раскрывать файл в дереве Folders только по требованию (контекстное меню → «Reveal in
+Side Bar»), встроенной настройки «всегда показывать текущий файл» у него нет. Плагин
+подписывается на `on_activated_async` и вызывает эту же команду сам, так что при
+переключении буферов дерево следует за курсором, как в сайдбаре по умолчанию ожидаешь.
+
+Команда не запускается, когда сайдбар скрыт (иначе она бы его открывала) и для
+буферов без пути на диске — панель поиска, консоль. Файл вне открытых папок проекта
+Sublime игнорирует сам, корень дерева при этом не меняется.
+
+Сам редактор ставится из AUR (`sublime-text-4`) на Arch/Manjaro и из apt-репозитория
+sublimehq на Linux Mint — `script/sublime.sh` при первом запуске регистрирует ключ и
+source list вендора.
 
 ### Neovim
 
