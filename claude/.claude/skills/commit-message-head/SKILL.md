@@ -1,11 +1,14 @@
 ---
-name: commit-message
-description: Write a commit message for the current changes — subject line ONLY, never a body. Use when the user asks «напиши сообщение для коммита», «сообщение для коммита», «текст коммита», «сообщение коммита», «напиши коммит», "write a commit message", "commit message for this".
+name: commit-message-head
+description: Write a commit message for the changes not yet committed — subject line ONLY, never a body. Use when the user asks «напиши сообщение для коммита», «сообщение для коммита», «текст коммита», «сообщение коммита», «напиши коммит», "write a commit message", "commit message for this". For already-committed work measured against the parent branch, use commit-message-diff instead.
 ---
 
-# commit-message
+# commit-message-head
 
-Produce the commit **subject line and nothing else**.
+Produce the commit **subject line and nothing else**, describing the work that is
+not committed yet: the staged changes when anything is staged, the working tree
+otherwise. Committed work measured against the parent branch belongs to
+`commit-message-diff`.
 
 ## The rule
 
