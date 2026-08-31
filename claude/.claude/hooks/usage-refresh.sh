@@ -5,7 +5,7 @@
 # `/usage` is only reachable as a slash command, so we run it headlessly. It makes no
 # model call (intercepted before the API), and we force a known --session-id so its
 # throwaway transcript can be deleted afterwards - the refresh leaves no session behind
-# (no history pollution, nothing added to the /usage session count). flock keeps
+# (no history pollution, nothing added to the /usage session count). A lock keeps
 # concurrent Claude sessions (any directory) to a single refresh; the cache is global
 # because the figure is machine-wide, not per-session.
 set -u
@@ -13,12 +13,29 @@ set -u
 CACHE="$HOME/.claude/usage-session-cache"
 RESET_CACHE="$HOME/.claude/usage-session-reset"
 WEEK_CACHE="$HOME/.claude/usage-week-cache"
-LOCK="$HOME/.claude/usage-session-cache.lock"
+# A directory, not a file: mkdir is the atomic primitive available on every
+# platform, and Git Bash on Windows ships no flock.
+LOCK="$HOME/.claude/usage-session-cache.lockdir"
 
-exec 9>"$LOCK" || exit 0
-flock -n 9 || exit 0
+# Without the CLI there is nothing to query - a Windows install that keeps no
+# `claude` on PATH leaves the cached percentages untouched and the status line
+# renders them as "-".
+command -v claude >/dev/null 2>&1 || exit 0
 
-uuid=$(cat /proc/sys/kernel/random/uuid)
+# A lock older than 5 minutes is the leftover of a killed refresh whose trap
+# never ran; reap it instead of blocking every later refresh forever.
+if [ -d "$LOCK" ]; then
+	[ -n "$(find "$LOCK" -maxdepth 0 -mmin +5 2>/dev/null)" ] || exit 0
+	rmdir "$LOCK" 2>/dev/null || exit 0
+fi
+mkdir "$LOCK" 2>/dev/null || exit 0
+trap 'rmdir "$LOCK" 2>/dev/null' EXIT
+
+# /proc is Linux-only; the Python hook wrapper covers Windows.
+uuid=$(cat /proc/sys/kernel/random/uuid 2>/dev/null) ||
+	uuid=$("$(dirname "$0")/py.sh" -c "import uuid; print(uuid.uuid4())" 2>/dev/null)
+[ -n "$uuid" ] || exit 0
+
 out=$(timeout 30 claude -p "/usage" --session-id "$uuid" 2>/dev/null)
 
 for transcript in "$HOME"/.claude/projects/*/"$uuid".jsonl; do

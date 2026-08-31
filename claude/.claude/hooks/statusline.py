@@ -33,6 +33,9 @@ USAGE_TTL = 120  # seconds before the cached percent is considered stale and a r
 # Color thresholds for the usage percents.
 USAGE_YELLOW_AT = 60
 USAGE_RED_AT = 85
+# Keeps the detached refresh from flashing a console window on Windows; the flag
+# exists only there.
+NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 def last_usage(transcript_path):
@@ -96,15 +99,26 @@ def session_usage():
         fresh = (time.time() - os.path.getmtime(USAGE_CACHE)) < USAGE_TTL
     except (OSError, ValueError):
         pass
-    if not fresh and os.access(USAGE_REFRESH, os.X_OK):
-        try:
-            subprocess.Popen(
-                [USAGE_REFRESH],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True,
-            )
-        except OSError:
-            pass
+    if not fresh and os.path.isfile(USAGE_REFRESH):
+        spawn_refresh()
     return pct
+
+
+def spawn_refresh():
+    # Windows cannot exec the .sh itself; hooks run under Git Bash there, so bash
+    # is what starts it. Detaching differs per platform too - own session on
+    # POSIX, no console window on Windows - but either way the status line never
+    # waits for it.
+    if os.name == "nt":
+        command, detach = ["bash", USAGE_REFRESH], {"creationflags": NO_WINDOW}
+    else:
+        command, detach = [USAGE_REFRESH], {"start_new_session": True}
+    try:
+        subprocess.Popen(
+            command, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, **detach,
+        )
+    except OSError:
+        pass
 
 
 def week_usage():

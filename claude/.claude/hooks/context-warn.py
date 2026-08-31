@@ -3,16 +3,19 @@
 
 Reads the hook payload (JSON) from stdin, tails the session transcript for the
 latest message.usage, sums input + cache_read + cache_creation tokens, and fires
-notify-send + paplay if the threshold is crossed. A marker file in /tmp guarantees
-one notification per session_id.
+a desktop notification if the threshold is crossed. A marker file in the system
+temp directory guarantees one notification per session_id.
 """
+from __future__ import annotations
+
 import json
 import os
-import subprocess
 import sys
+import tempfile
+
+from notify import notify
 
 THRESHOLD = 500_000
-SOUND = "/usr/share/sounds/freedesktop/stereo/dialog-warning.oga"
 
 
 def main() -> int:
@@ -26,7 +29,7 @@ def main() -> int:
     if not transcript or not os.path.isfile(transcript):
         return 0
 
-    marker = f"/tmp/claude-ctx-warned-{session_id}"
+    marker = os.path.join(tempfile.gettempdir(), f"claude-ctx-warned-{session_id}")
     if os.path.exists(marker):
         return 0
 
@@ -66,15 +69,7 @@ def main() -> int:
     title = f"Claude Code: context {THRESHOLD // 1000}k"
     body = f"Session {session_id[:8]} ({cwd_label}) reached {total:_} tokens".replace("_", " ")
 
-    subprocess.Popen(
-        ["notify-send", "-u", "critical", "-a", "Claude Code", title, body],
-        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-    )
-    if os.path.isfile(SOUND):
-        subprocess.Popen(
-            ["paplay", SOUND],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        )
+    notify(title, body, urgent=True)
     return 0
 
 

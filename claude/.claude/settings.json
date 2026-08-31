@@ -10,12 +10,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/context-warn.py",
+            "command": "\"$HOME/.claude/hooks/py.sh\" \"$HOME/.claude/hooks/context-warn.py\"",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "$HOME/.claude/hooks/dotfiles-uncommitted-warn.py",
+            "command": "\"$HOME/.claude/hooks/py.sh\" \"$HOME/.claude/hooks/dotfiles-uncommitted-warn.py\"",
             "timeout": 5
           }
         ]
@@ -27,7 +27,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cmd=$(jq -r '.tool_input.command // \"\"'); printf \"%s\" \"$cmd\" | grep -q \"git mv\" || exit 0; out=$(printf \"git mv: verify moved files show R (rename), not D+add:\\n\"; git status --short -uno; echo \"--- staged renames (diff --cached -M --diff-filter=R) ---\"; git diff --cached -M --diff-filter=R --name-status); jq -n --arg c \"$out\" '{hookSpecificOutput:{hookEventName:\"PostToolUse\",additionalContext:$c}}' ",
+            "command": "\"$HOME/.claude/hooks/py.sh\" \"$HOME/.claude/hooks/git-mv-verify.py\"",
             "timeout": 15
           }
         ]
@@ -36,7 +36,7 @@
   },
   "statusLine": {
     "type": "command",
-    "command": "$HOME/.claude/hooks/statusline.py"
+    "command": "\"$HOME/.claude/hooks/py.sh\" \"$HOME/.claude/hooks/statusline.py\""
   },
   "env": {
     "CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY": "1"
@@ -52,5 +52,10 @@
   },
   "theme": "dark",
   "autoCompactEnabled": false,
-  "voiceEnabled": true
+  "voiceEnabled": true,
+  "permissions": {
+    "allow": [
+      "Bash(py:*)"
+    ]
+  }
 }

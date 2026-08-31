@@ -29,10 +29,10 @@ none, ask.
    where `<sha1 of path>` = `printf '%s' "<path>" | sha1sum` and
    `file_path` uses `%2F` for `/`. This opens the commit scrolled to the file
    with the file expanded.
-4. Open in Chrome, detached:
-   `google-chrome-stable <url> > /dev/null 2>&1 & disown`
-   - Binary is `/usr/bin/google-chrome-stable` — do NOT use `xdg-open`,
-     `google-chrome`, `chromium`, `firefox`.
+4. Open in Chrome, detached — the same command the `open-in-browser` skill uses:
+   - Linux: `google-chrome-stable <url> > /dev/null 2>&1 & disown`
+   - Windows: `"/c/Program Files (x86)/Google/Chrome/Application/chrome.exe" <url> > /dev/null 2>&1 &`
+   - Do NOT use `xdg-open`, `google-chrome`, `chromium`, `firefox`.
 5. Reply with the URL(s) so the user can copy them.
 
 ## Notes

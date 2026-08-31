@@ -6,6 +6,7 @@
 
 - Arch Linux / Manjaro
 - Linux Mint 22
+- Windows 10 — только пакет `claude/`, см. [Windows](#windows)
 
 ## Установка
 
@@ -103,6 +104,74 @@ fish/.config/fish/  →  ~/.config/fish/
 Для установки пакетов из AUR (pyright, cmake-language-server) используется `yay`, а не Manjaro-шный `pamac`.
 
 Причина: скрипты различают ОС по файлу `/etc/arch-release`, который есть **и в Arch, и в Manjaro** — одна ветка кода обслуживает обе системы. `yay` ставится на любом Arch-подобном дистрибутиве, тогда как `pamac` существует только в Manjaro (пакета `pamac-cli` нет в официальных репозиториях чистого Arch — он живёт в AUR). Замена `yay` на `pamac` сломала бы установку на ванильном Arch. Если когда-нибудь поддержку чистого Arch решат убрать (см. `TODO: check for Manjaro` в `script/preinstall.sh`), переход на `pamac` станет уместным.
+
+## Windows
+
+На Windows от репозитория нужен один пакет — `claude/`: те же скиллы, команды,
+хуки и глобальные инструкции, что и на Linux. Всё остальное (nvim, tmux, fish и
+прочее) остаётся Linux-only.
+
+### Установка
+
+```powershell
+powershell -ExecutionPolicy Bypass -File script\windows\install-claude.ps1 -Check
+powershell -ExecutionPolicy Bypass -File script\windows\install-claude.ps1
+powershell -ExecutionPolicy Bypass -File script\windows\install-private.ps1
+```
+
+`-Check` показывает, что изменится, и ничего не трогает. Реальный файл на месте
+ссылки скрипт не удаляет: он останавливается и просит убрать файл вручную, а с
+`-Force` переносит его в `<имя>.bak-<метка времени>`.
+
+Что нужно на машине:
+
+- **Developer Mode** (Параметры → Обновление и безопасность → Для разработчиков) —
+  без него обычный пользователь не может создать symlink. Проверка идёт в момент
+  создания ссылки, перезагрузка не нужна.
+- **Git for Windows** — в нём Git Bash, которым Claude Code выполняет хуки.
+- **Python 3**, доступный через лаунчер `py`.
+
+Установщик — не stow, а `mklink` из `cmd`: `New-Item -ItemType SymbolicLink` в
+Windows PowerShell 5.1 не передаёт флаг unprivileged-create и требует админа даже
+при включённом Developer Mode. Общие хелперы линковки — в `script/windows/links.ps1`.
+
+`~/.claude/skills` остаётся **реальным** каталогом со ссылкой на каждый скилл по
+отдельности: приватные скиллы с Яндекс.Диска кладутся туда же, а ссылка на
+каталог целиком отправляла бы их внутрь этого публичного репозитория. Плата за
+это — **новый скилл требует повторного запуска** `install-claude.ps1`; файлы
+внутри `commands/` и `hooks/` подхватываются сами, эти каталоги слинкованы
+целиком. Аналога авто-restow из git-хуков на Windows нет: `.githooks/restow`
+видит, что `stow` не установлен, и молча выходит.
+
+Git-хуки репозитория (проверка на личные данные перед коммитом) включаются той же
+командой, что и на Linux, — `make install-githooks` на Windows недоступен:
+
+```powershell
+git config core.hooksPath .githooks
+```
+
+Яндекс.Диск на Windows синхронизируется в `%USERPROFILE%\YandexDisk` — без точки,
+в отличие от Linux-клиента; `install-private.ps1` знает про это, путь
+переопределяется через `-PrivateDir` или `PRIVATE_DOTFILES_DIR`.
+
+### Что пришлось сделать кроссплатформенным
+
+Хуки Claude Code на Windows выполняются в Git Bash, поэтому `$HOME`, пайпы и
+кавычки в `settings.json` работают как на Linux. Остальное пришлось развести:
+
+| Что | Почему | Как решено |
+|-----|--------|------------|
+| Интерпретатор Python | `python3` на Windows — заглушка Microsoft Store: печатает «Python» и ничего не запускает, так что shebang хука бесполезен | `hooks/py.sh` выбирает `py -3` или `python3`; все команды в `settings.json` идут через него |
+| Хук на `git mv` | `jq` в Git for Windows нет | inline-однострочник вынесен в `hooks/git-mv-verify.py` |
+| Уведомления | `notify-send`/`paplay` — Linux-only | `hooks/notify.py`: notify-send на Linux, toast через PowerShell на Windows |
+| `usage-refresh.sh` | нет `flock` и `/proc/sys/kernel/random/uuid` | блокировка через `mkdir` (с отбраковкой залипшей старше 5 минут), uuid — из Python |
+| Пути к Chrome и Яндекс.Диску | разные на двух ОС | ветки внутри `SKILL.md` соответствующих скиллов |
+
+`settings.json` при этом остался **один** на обе ОС.
+
+Если CLI `claude` не лежит в `PATH` (обычная ситуация при работе из расширения
+VS Code), `usage-refresh.sh` тихо выходит, и поля `sess`/`week` в статуслайне
+показывают `-`. Остальная строка статуса работает.
 
 ## Обслуживание системы
 

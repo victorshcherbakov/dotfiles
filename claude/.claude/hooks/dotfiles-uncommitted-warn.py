@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Warn via notify-send when the dotfiles repo has uncommitted changes in claude/.
+"""Warn on the desktop when the dotfiles repo has uncommitted changes in claude/.
 
 Fires on the Stop event. The claude/ directory is a stow-managed package whose
-contents are symlinked into ~/.claude/, so any skill/command/hook/settings.json
+contents are symlinked into ~/.claude/ (by stow on Linux, by
+script/windows/install-claude.ps1 on Windows), so any skill/command/hook/settings.json
 that Claude Code writes there shows up as a tracked-or-untracked change in
 `git status` of the dotfiles repo. If anything is pending, we remind the user.
 
@@ -10,11 +11,15 @@ Notifies only when the pending state actually changed since the last
 notification: a hash of status+diff is kept in a cache file shared by all
 sessions, and a clean tree resets it so the next change notifies again.
 """
+from __future__ import annotations
+
 import hashlib
 import json
 import os
 import subprocess
 import sys
+
+from notify import notify
 
 SUBPATH = "claude/"
 STATE_FILE = os.path.join(
@@ -97,14 +102,7 @@ def main() -> int:
         f"Don't forget to commit."
     )
 
-    try:
-        subprocess.run(
-            ["notify-send", "-u", "normal", "-i", "dialog-information", title, body],
-            timeout=3,
-            check=False,
-        )
-    except Exception:
-        pass
+    notify(title, body)
 
     try:
         os.makedirs(os.path.dirname(STATE_FILE), exist_ok=True)
