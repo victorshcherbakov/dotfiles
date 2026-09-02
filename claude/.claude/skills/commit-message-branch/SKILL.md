@@ -1,16 +1,16 @@
 ---
-name: commit-message-diff
-description: Write a commit message for the work already committed on this branch, measured against its parent branch — subject line ONLY, never a body. Use when the user asks «сообщение для изменений в ветке», «коммит-месседж для ветки», «сообщение относительно родительской ветки», «текст для squash», "commit message for the branch", "message for the branch diff", "squash message". For uncommitted changes use commit-message-head instead.
+name: commit-message-branch
+description: Write a commit message for the work already committed on this branch, measured against its parent branch — subject line ONLY, never a body. Use when the user asks «сообщение для изменений в ветке», «коммит-месседж для ветки», «сообщение относительно родительской ветки», «текст для squash», "commit message for the branch", "message for the branch diff", "squash message". For uncommitted changes use commit-message-uncommitted instead.
 ---
 
-# commit-message-diff
+# commit-message-branch
 
 Produce the commit **subject line and nothing else**, describing what this branch
 changed relative to its parent branch. Typical use: the subject for a squash, a
 merge request title, or a summary of the branch.
 
 Style rules are shared with the sibling skill: read
-`~/.claude/skills/commit-message-head/SKILL.md` and follow its "The rule" and
+`~/.claude/skills/commit-message-uncommitted/SKILL.md` and follow its "The rule" and
 "Writing the line" sections. Only the target selection below differs.
 
 ## Finding the parent branch
