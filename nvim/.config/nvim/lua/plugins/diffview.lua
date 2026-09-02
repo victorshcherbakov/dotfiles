@@ -5,6 +5,7 @@ local M = {
     "<Leader>ho",
     "<Leader>hc",
     "<Leader>hm",
+    "<Leader>hM",
     "<Leader>hf",
     "<Leader>hF",
     "<Leader>hq",
@@ -38,8 +39,13 @@ function M.config()
     { desc = "Diffview: working tree vs index" })
   km.map("n", "<Leader>hc", "<Cmd>DiffviewOpen HEAD~1<CR>",
     { desc = "Diffview: last commit" })
-  km.map("n", "<Leader>hm", "<Cmd>DiffviewOpen master<CR>",
-    { desc = "Diffview: master vs working tree" })
+  -- Three dots: the left side is the merge-base, so the diff holds only what this branch did.
+  -- Two dots would also drag in every master commit made since, inverted.
+  -- --imply-local puts the working tree on the right, so uncommitted edits show up too.
+  km.map("n", "<Leader>hm", "<Cmd>DiffviewOpen origin/master...HEAD --imply-local<CR>",
+    { desc = "Diffview: this branch since merge-base" })
+  km.map("n", "<Leader>hM", "<Cmd>DiffviewOpen origin/master...HEAD<CR>",
+    { desc = "Diffview: this branch since merge-base, committed only" })
   km.map("n", "<Leader>hf", "<Cmd>DiffviewFileHistory %<CR>",
     { desc = "Diffview: current file history" })
   km.map("n", "<Leader>hF", "<Cmd>DiffviewFileHistory<CR>",
