@@ -25,6 +25,20 @@ When you offer me choices in plain prose (not via the interactive question tool)
 number them (1., 2., 3.) — never letter them (a/b/c). The interactive question tool
 renders its own UI and is exempt.
 
+## No unsourced claims
+
+Every statement about how someone else's code, API, or system behaves needs a
+named source — `file:line`, documentation, command output, or an experiment you
+ran. No source means either saying "assumption, not verified" or going and
+checking. This bites hardest on causal claims: "the pointer isn't ours",
+"otherwise it double-frees", "on failure the function leaves X untouched".
+
+Never justify code with an unverified guess. Check first — grep the vendored
+headers, read the docs, temporarily patch a branch and run it — then write the
+lines. Call an unexercised code path unexercised instead of describing its
+behavior with confidence, and keep "fact (source)" and "guess (unverified)"
+visibly apart when reporting.
+
 ## Session restore one-liner
 
 When the user asks to save the current state so they can resume in a new
