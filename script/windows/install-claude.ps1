@@ -21,13 +21,18 @@ stopping. Nothing is ever deleted.
 .PARAMETER Check
 Report what would change and exit without touching anything.
 
+.PARAMETER Quiet
+Report only actual changes, so the git hook running this after every pull stays
+silent unless something moved.
+
 .EXAMPLE
 powershell -ExecutionPolicy Bypass -File script\windows\install-claude.ps1 -Check
 #>
 [CmdletBinding()]
 param(
 	[switch]$Force,
-	[switch]$Check
+	[switch]$Check,
+	[switch]$Quiet
 )
 
 Set-StrictMode -Version Latest
@@ -55,7 +60,7 @@ $entries = @('CLAUDE.md', 'AGENTS.md', 'settings.json', 'commands', 'hooks')
 $failed = 0
 foreach ($entry in $entries) {
 	$ok = New-Link -Path (Join-Path $dest $entry) -Target (Join-Path $source $entry) `
-		-Force:$Force -Check:$Check -Prefix 'claude' -ErrorAction Continue
+		-Force:$Force -Check:$Check -Quiet:$Quiet -Prefix 'claude' -ErrorAction Continue
 	if (-not $ok) { $failed++ }
 }
 
@@ -75,8 +80,36 @@ if (-not $Check -and -not (Test-Path -LiteralPath $skills)) {
 
 foreach ($skill in Get-ChildItem -LiteralPath (Join-Path $source 'skills') -Directory) {
 	$ok = New-Link -Path (Join-Path $skills $skill.Name) -Target $skill.FullName `
-		-Force:$Force -Check:$Check -Prefix 'claude' -ErrorAction Continue
+		-Force:$Force -Check:$Check -Quiet:$Quiet -Prefix 'claude' -ErrorAction Continue
 	if (-not $ok) { $failed++ }
+}
+
+# The loop above only adds. A skill renamed or dropped in the repo leaves a link
+# whose target is gone, and Test-Path on a directory symlink reports the entry
+# rather than the target, so nothing else ever notices it.
+if ((Test-Path -LiteralPath $skills) -and -not (Test-Link -Path $skills)) {
+	# Trailing separator, so a sibling directory whose name merely starts the
+	# same way cannot match.
+	$sourceSkills = (Join-Path $source 'skills') + [IO.Path]::DirectorySeparatorChar
+	foreach ($link in Get-ChildItem -LiteralPath $skills -Force) {
+		if (-not (Test-Link -Path $link.FullName)) { continue }
+		$target = Get-LinkTarget -Path $link.FullName
+		if ($target -and (Test-Path -LiteralPath $target)) { continue }
+
+		# Only links into this repo are ours to drop: a private skill is broken
+		# merely because Yandex.Disk has not synced yet, and deleting it would
+		# turn a wait into a reinstall.
+		if ($target -and $target.StartsWith($sourceSkills, [StringComparison]::OrdinalIgnoreCase)) {
+			if ($Check) {
+				Write-Host "claude: would remove stale link $($link.FullName)"
+			} else {
+				Remove-Link -Path $link.FullName
+				Write-Host "claude: removed stale link $($link.FullName)"
+			}
+		} else {
+			Write-Warning "claude: $($link.FullName) points at missing $target - left alone, it is not from this repo"
+		}
+	}
 }
 
 if ($failed -gt 0) {
@@ -84,4 +117,4 @@ if ($failed -gt 0) {
 	exit 1
 }
 
-Write-Host 'claude: done'
+if (-not $Quiet) { Write-Host 'claude: done' }

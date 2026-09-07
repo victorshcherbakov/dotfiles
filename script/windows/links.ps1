@@ -54,12 +54,16 @@ function New-Link {
 	<#
 	.SYNOPSIS
 	Point $Path at $Target, reporting what it did. Returns $true on success.
+
+	.PARAMETER Quiet
+	Report only actual changes, so an unchanged tree produces no output.
 	#>
 	param(
 		[Parameter(Mandatory)][string]$Path,
 		[Parameter(Mandatory)][string]$Target,
 		[switch]$Force,
 		[switch]$Check,
+		[switch]$Quiet,
 		[string]$Prefix = 'link'
 	)
 
@@ -70,7 +74,7 @@ function New-Link {
 
 	if (Test-Link -Path $Path) {
 		if ((Get-LinkTarget -Path $Path) -eq $Target) {
-			Write-Host "${Prefix}: ok $Path"
+			if (-not $Quiet) { Write-Host "${Prefix}: ok $Path" }
 			return $true
 		}
 		if ($Check) {
