@@ -25,6 +25,17 @@ When you offer me choices in plain prose (not via the interactive question tool)
 number them (1., 2., 3.) — never letter them (a/b/c). The interactive question tool
 renders its own UI and is exempt.
 
+## Ticket references in documents
+
+Every tracker ticket id written into a document (`PROJ-1234`, i.e. a project
+prefix, a dash, a number) is a markdown link to the ticket, never bare text:
+`[PROJ-1234](<tracker>/issue/PROJ-1234)`. Every occurrence, not only the first
+one - the reader clicks wherever they are in the page. The tracker URL and the
+real project prefixes are employer data, so they live in the private import
+("YouTrack host" section); without that section, ask for the host rather than
+guessing it. Plain text stays plain where a link cannot render: commit messages,
+code comments, shell output.
+
 ## No unsourced claims
 
 Every statement about how someone else's code, API, or system behaves needs a
