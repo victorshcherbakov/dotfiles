@@ -55,28 +55,31 @@ section, keep the one-liner in sync with it.
 Reason: the user wants a fast, copyable way to resume a task in a fresh chat
 without recalling context by hand.
 
-## Shell environment (Bash tool runs zsh; login shell is fish)
+## Shell environment (Bash tool runs bash; login shell is fish)
 
-The login/interactive shell is **fish** (`/usr/bin/fish`), but the Bash tool
-executes commands via **zsh** (fish is not POSIX-compatible, so the tool does
-not use it). Errors formatted `(eval):N: parse error near ...` come from zsh.
+The login shell is **fish** and is not POSIX-compatible, so Claude Code does not
+use it for the Bash tool. `SHELL=/bin/bash` in `~/.claude/settings.json` pins
+the tool to **bash**; without that pin Claude Code falls back to zsh, whose
+stricter globbing turns valid bash one-liners into hard errors — an unmatched
+glob, a `--include=*.cpp`, an `echo === banner ===` or a `$REV:path` aborts the
+command instead of running it.
 
-Write **bash/POSIX syntax** in tool commands — zsh accepts it. NEVER write
-fish syntax (`set x ...`, `if ... end`, `and`/`or`) in tool commands; a zsh
-parse error means a syntax slip in the command, not "should have been fish".
+Write bash/POSIX syntax. NEVER fish syntax (`set x ...`, `if ... end`,
+`and`/`or`) in tool commands. An error reading `(eval):N: ...` or `zsh: ...`
+means the pin is not in effect on this machine: say so instead of guessing at
+the syntax, and re-check `settings.json`.
 
-Two recurring traps — zsh defaults that differ from bash:
+Three traps that are not the shell's fault and survive the switch:
 
-1. **Quote globs meant for the command.** zsh expands unquoted globs *before*
-   passing them on and, unlike bash, aborts with `no matches found` when the cwd
-   has no match. Quote them: `grep -rn --include='*.cpp'`, `find . -name '*.tsx'`.
-
-2. **Variables do NOT word-split.** `FILES="a b c"; git add $FILES` passes a
-   single argument → `pathspec did not match`. Pass paths inline or loop over an
-   explicit list; don't rely on bash IFS splitting of unquoted variables.
-
-(The same two behaviors apply in fish interactively, so the advice holds there
-too.)
+1. **`--` goes after every flag, never before it.** `grep -- "$pat" -r .` makes
+   `-r` a filename and silently finds nothing; `git commit -- <paths> -m "msg"`
+   makes `-m` a pathspec.
+2. **The cwd resets to the project root before every Bash call.** A `cd` lasts
+   only inside its own command, and later relative paths resolve against that
+   new directory — `cd build && ... && git commit -- source/x.cpp` fails with
+   `pathspec did not match`. Prefer absolute paths and `git -C <repo>`.
+3. **Prefix a glob that feeds a command with `./`.** A match starting with `-`
+   becomes an option: `ls -d */` breaks in a directory holding `-foo/`.
 
 ## Code conventions
 
