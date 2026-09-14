@@ -50,6 +50,21 @@ lines. Call an unexercised code path unexercised instead of describing its
 behavior with confidence, and keep "fact (source)" and "guess (unverified)"
 visibly apart when reporting.
 
+## Measure instead of guessing
+
+Adding diagnostic logging to find out why something happens is a correct, expected
+move, not a last resort. When the cause is not visible from reading the code in a
+pass or two, do not narrow the answer to "probably" or "it depends" — put prints
+at the branch points, reproduce, and read the output. One measurement beats five
+speculative edits.
+
+The same goes for a minimal standalone reproduction outside the project when the
+question is really about a compiler, a library, or an OS API: a twenty-line file
+built with the project's own flags answers it in seconds, and the answer is a
+fact rather than a recollection.
+
+Remove the instrumentation once the cause is found and written down.
+
 ## Session restore one-liner
 
 When the user asks to save the current state so they can resume in a new
