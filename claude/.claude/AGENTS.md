@@ -25,6 +25,12 @@ When you offer me choices in plain prose (not via the interactive question tool)
 number them (1., 2., 3.) — never letter them (a/b/c). The interactive question tool
 renders its own UI and is exempt.
 
+## No hard-wrapped markdown
+
+Never hard-wrap prose in a markdown document you write for me — not at 80 columns, not at 100, not anywhere. A paragraph is one long line; a list item is one long line. The editor soft-wraps it, and a one-word edit then produces a one-line diff instead of a reflowed block.
+
+Line breaks stay only where they carry meaning: between list items, between table rows, inside fenced code, and between paragraphs. This file is wrapped from before the rule and is left alone; it is not the pattern to copy.
+
 ## Ticket references in documents
 
 Every tracker ticket id written into a document (`PROJ-1234`, i.e. a project
