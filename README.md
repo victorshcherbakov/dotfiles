@@ -214,7 +214,7 @@ sudo pacman -Rns $(pacman -Qtdq)
 | `lazygit/` | Lazygit — кастомные команды |
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
-| `claude/` | Claude Code — settings.json, commands, hooks, skills |
+| `claude/` | Claude Code — settings.json, keybindings.json, commands, hooks, skills |
 | `sublime/` | Sublime Text — плагин авто-reveal текущего файла в сайдбаре |
 
 ### Sublime Text
