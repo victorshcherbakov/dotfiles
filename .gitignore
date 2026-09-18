@@ -29,6 +29,13 @@ claude/.claude/projects/
 claude/.claude/session-env/
 claude/.claude/sessions/
 claude/.claude/shell-snapshots/
+# Skills synced from the cloud land inside the tree because ~/.claude/skills
+# is a stow symlink onto this directory.
+claude/.claude/skills/synced/
+# Same reason: `make install-private` links each private skill from Yandex.Disk
+# into ~/.claude/skills, i.e. in here. Keep in sync with `entries` in
+# script/private_links.sh.
+claude/.claude/skills/customer-reply
 claude/.claude/tasks/
 
 .envrc
