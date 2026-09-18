@@ -50,7 +50,7 @@ fish/.config/fish/  →  ~/.config/fish/
 
 Каждый таргет `make install-*` запускает скрипт установки из `script/*.sh`, а затем `stow --target=$HOME <dir>` для инструментов с конфигурационными директориями. `script/preinstall.sh` определяет ОС — Arch/Manjaro (pacman/yay) или Linux Mint 22 (apt) — и запускает обновление системы. Общие хелперы:
 
-- `install_by_package_manager.sh` — обёртка над apt для установки системных пакетов
+- `install_by_package_manager.sh` — обёртка над apt для установки системных пакетов; уже установленное пропускает (по `dpkg-query`, с откатом на поиск бинарника), поэтому таргет, у которого все зависимости на месте, не спрашивает пароль sudo и не трогает пакет, поставленный мимо apt — например `bat`/`fd` из GitHub-релиза
 - `install_from_github_archive.sh` — скачивает последний tar.gz-релиз с GitHub в `~/.local/bin/`
 - `install_from_github_deb.sh` — скачивает последний .deb-релиз с GitHub и устанавливает его
 
