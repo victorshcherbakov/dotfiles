@@ -54,7 +54,7 @@ fish/.config/fish/  →  ~/.config/fish/
 - `install_from_github_archive.sh` — скачивает последний tar.gz-релиз с GitHub в `~/.local/bin/`
 - `install_from_github_deb.sh` — скачивает последний .deb-релиз с GitHub и устанавливает его
 
-Бинарники, устанавливаемые не через пакетный менеджер, кладутся в `~/.local/bin/`.
+Бинарники, устанавливаемые не через пакетный менеджер, кладутся в `~/.local/bin/`. Исключение — `script/lsp_lua.sh`: архив lua-language-server не содержит верхнего каталога (`bin/`, `main.lua`, `meta/` лежат в корне), поэтому распаковывается в собственный каталог `~/.local/share/lua-language-server/`, а в `~/.local/bin/` кладётся symlink на бинарник — сервер находит свою нагрузку по реальному пути, так что запуск через ссылку работает.
 
 ### Авто-restow через git-хуки
 
@@ -252,7 +252,7 @@ source list вендора.
 
 ## Инструменты разработки
 
-**LSP-серверы:** clangd, gopls, pyright, lua_ls, bashls, ts_ls, cmake, csharp_ls
+**LSP-серверы:** таргеты ставят clangd (`install-clang`), pyright (`install-lsp-python`), lua_ls (`install-lsp-lua`), bashls (`install-lsp-bash`), csharp_ls (`install-lsp-csharp`). В `nvim/.config/nvim/lua/plugins/lspconfig.lua` включены ещё `gopls`, `ts_ls` и `cmake`, но установки для них в репозитории нет: таргетов под gopls и ts_ls не существует вовсе, а `script/lsp_cmake.sh` вне Arch печатает TODO и выходит. Пока такой сервер не поставлен руками, Neovim его просто не найдёт.
 
 **Утилиты:** ripgrep, fd, fzf, bat, jq, xclip, xdotool, ninja, cmake, mold, direnv, tree-sitter-cli
 

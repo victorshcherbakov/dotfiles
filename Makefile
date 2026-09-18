@@ -87,7 +87,7 @@ install-tree-sitter-cli: preinstall
 	${SHELL} ${MKFILE_DIR}/script/tree_sitter_cli.sh
 
 .PHONY: install-stylua
-install-lsp-lua: preinstall
+install-stylua: preinstall
 	${SHELL} ${MKFILE_DIR}/script/stylua.sh
 
 .PHONY: install-gdb
@@ -176,6 +176,10 @@ install-python: preinstall
 .PHONY: install-python-pip
 install-python-pip: preinstall install-python
 	${SHELL} ${MKFILE_DIR}/script/python_pip.sh
+
+.PHONY: install-lsp-lua
+install-lsp-lua: preinstall
+	${SHELL} ${MKFILE_DIR}/script/lsp_lua.sh
 
 .PHONY: install-lsp-cmake
 install-lsp-cmake: preinstall
