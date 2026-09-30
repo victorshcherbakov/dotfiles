@@ -56,3 +56,8 @@ km.map("n", "<Leader>ol", "<Cmd>lopen<CR>")
 km.map("n", "<Leader>nl", "<Cmd>lnext<CR>")
 km.map("n", "<Leader>pl", "<Cmd>lprevious<CR>")
 -- }}}
+
+-- {{{ Voice notes.
+km.map({ "n", "x" }, "<Leader>a", function() require("sinbizkit.voice_note").toggle() end,
+  { desc = 'Voice note: start / stop dictating a note for the cursor position' })
+-- }}}
