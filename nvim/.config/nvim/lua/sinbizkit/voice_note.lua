@@ -7,7 +7,7 @@ local notes_file = vim.fn.expand "~/.local/state/voice-notes/notes.md"
 local model_file = vim.fn.expand "~/.local/share/whisper/ggml-large-v3-turbo-q5_0.bin"
 local vad_model_file = vim.fn.expand "~/.local/share/whisper/ggml-silero-v6.2.0.bin"
 
-local recording_process = nil -- vim.SystemObj of pw-record while recording
+local recording_process = nil -- vim.SystemObj of parecord while recording
 
 local function append_note(location, text)
   vim.fn.mkdir(vim.fn.fnamemodify(notes_file, ":h"), "p")
@@ -83,8 +83,11 @@ M.toggle = function()
   local location = cursor_location(first_line, last_line)
   local wav_file = vim.fn.tempname() .. ".wav"
 
-  -- pw-record exits with code 1 on SIGINT but still finalizes a valid wav header.
-  recording_process = vim.system({ "pw-record", "--rate", "16000", "--channels", "1", "--format", "s16", wav_file }, {},
+  -- On SIGINT parecord finalizes the wav header before exiting, but drops audio the
+  -- server has not handed over yet: without a latency bound it hands over 2 s chunks,
+  -- so a note shorter than that would come out empty.
+  recording_process = vim.system({ "parecord", "--latency-msec=50", "--rate=16000", "--channels=1", "--format=s16le",
+    "--file-format=wav", wav_file }, {},
     vim.schedule_wrap(function() transcribe(wav_file, location) end))
   vim.notify("voice: recording, " .. (location or "no location") .. " — press again to stop")
 end

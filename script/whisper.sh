@@ -9,6 +9,16 @@ model=large-v3-turbo-q5_0
 # Voice activity detection: without it whisper hallucinates text on silence.
 vad_model=silero-v6.2.0
 
+# parecord records the microphone: it speaks the PulseAudio protocol, so it works
+# both on PulseAudio and on PipeWire with pipewire-pulse, unlike pw-record.
+if ! command -v parecord &>/dev/null; then
+	if [[ -f "/etc/arch-release" ]]; then
+		sudo pacman -S --needed libpulse || exit 1
+	else
+		sudo apt install pulseaudio-utils || exit 1
+	fi
+fi
+
 tag=$(git ls-remote --tags --refs https://github.com/ggml-org/whisper.cpp \
 	| awk -F/ '{print $3}' | sort -V | tail -1)
 [[ -n "$tag" ]] || { echo "whisper.cpp: failed to resolve the latest tag" >&2; exit 1; }
