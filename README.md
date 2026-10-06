@@ -256,7 +256,7 @@ source list вендора.
 
 **Утилиты:** ripgrep, fd, fzf, bat, jq, xclip, xdotool, ninja, cmake, mold, direnv, tree-sitter-cli
 
-`xclip` — X11-клипборд для tmux и Claude Code (вставка картинок по Ctrl+V); при переезде на Wayland в `script/xclip.sh` добавить `wl-clipboard`.
+`xclip` — X11-клипборд для tmux и Claude Code (вставка картинок по Ctrl+V); при переезде на Wayland в `script/xclip.sh` добавить `wl-clipboard`. Внутри tmux xclip нужен `DISPLAY`, а панель, созданная, пока к сессии был подключён клиент без X (tty, ssh), остаётся без него навсегда — tmux обновляет окружение сессии при attach, но не окружение уже запущенных шеллов. `fish/.config/fish/conf.d/tmux_env.fish` перед каждой командой перечитывает `DISPLAY`/`XAUTHORITY`/`WAYLAND_DISPLAY`/`XDG_SESSION_TYPE` из `tmux show-environment`.
 
 `xdotool` — X11-автоматизация. Используется в `config.fish` как обход регрессии Muffin ≥ 6.6.0 (WM в Cinnamon): новое окно Alacritty поднимается наверх, но без клавиатурного фокуса, и shell не принимает ввод, пока не кликнешь внутрь. Хук в `config.fish` повторно активирует окно по `$ALACRITTY_WINDOW_ID`. Ставится в `script/fish.sh`; X11-only, для Wayland потребуется аналог (`ydotool`/`wtype`).
 
