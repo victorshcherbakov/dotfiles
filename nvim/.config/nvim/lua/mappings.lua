@@ -60,4 +60,6 @@ km.map("n", "<Leader>pl", "<Cmd>lprevious<CR>")
 -- {{{ Voice notes.
 km.map({ "n", "x" }, "<Leader>a", function() require("sinbizkit.voice_note").toggle() end,
   { desc = 'Voice note: start / stop dictating a note for the cursor position' })
+km.map("n", "<Leader>A", function() require("sinbizkit.voice_note").cancel() end,
+  { desc = 'Voice note: discard the recording in progress' })
 -- }}}

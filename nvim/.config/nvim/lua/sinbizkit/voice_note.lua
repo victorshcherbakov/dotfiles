@@ -8,6 +8,7 @@ local model_file = vim.fn.expand "~/.local/share/whisper/ggml-large-v3-turbo-q5_
 local vad_model_file = vim.fn.expand "~/.local/share/whisper/ggml-silero-v6.2.0.bin"
 
 local recording_process = nil -- vim.SystemObj of parecord while recording
+local recording_cancelled = false
 
 local function append_note(location, text)
   vim.fn.mkdir(vim.fn.fnamemodify(notes_file, ":h"), "p")
@@ -86,10 +87,28 @@ M.toggle = function()
   -- On SIGINT parecord finalizes the wav header before exiting, but drops audio the
   -- server has not handed over yet: without a latency bound it hands over 2 s chunks,
   -- so a note shorter than that would come out empty.
+  recording_cancelled = false
   recording_process = vim.system({ "parecord", "--latency-msec=50", "--rate=16000", "--channels=1", "--format=s16le",
     "--file-format=wav", wav_file }, {},
-    vim.schedule_wrap(function() transcribe(wav_file, location) end))
+    vim.schedule_wrap(function()
+      if recording_cancelled then
+        os.remove(wav_file)
+        return
+      end
+      transcribe(wav_file, location)
+    end))
   vim.notify("voice: recording, " .. (location or "no location") .. " — press again to stop")
+end
+
+M.cancel = function()
+  if not recording_process then
+    vim.notify("voice: not recording", vim.log.levels.WARN)
+    return
+  end
+  recording_cancelled = true
+  recording_process:kill "sigint"
+  recording_process = nil
+  vim.notify "voice: recording discarded"
 end
 
 return M
