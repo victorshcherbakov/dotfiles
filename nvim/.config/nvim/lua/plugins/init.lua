@@ -1,3 +1,5 @@
+local lsp_progress = ""
+
 return {
 
   {
@@ -27,6 +29,18 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     dependencies = { "kyazdani42/nvim-web-devicons" },
+    init = function()
+      -- Not vim.lsp.status(): it pops the messages it reads, so every timer or
+      -- CursorMoved refresh of lualine would blank the text between reports.
+      vim.api.nvim_create_autocmd("LspProgress", {
+        pattern = { "begin", "report", "end" },
+        callback = function(event)
+          local value = event.data.params.value
+          lsp_progress = value.kind == "end" and "" or value.title .. (value.message and ": " .. value.message or "")
+          require("lualine").refresh()
+        end,
+      })
+    end,
     opts = {
       options = {
         section_separators = { left = "", right = "" },
@@ -37,7 +51,20 @@ return {
         lualine_a = { "mode" },
         lualine_b = { "branch" },
         lualine_c = { { "filename" }, { "diff" } },
-        lualine_x = { "encoding", "fileformat", "filetype" },
+        lualine_x = {
+          {
+            function()
+              return lsp_progress
+            end,
+            -- A plain "DiagnosticWarn" links the whole group and drops the section background.
+            color = function()
+              return { fg = require("lualine.utils.utils").extract_highlight_colors("DiagnosticWarn", "fg") }
+            end,
+          },
+          "encoding",
+          "fileformat",
+          "filetype",
+        },
         lualine_y = {
           { "diagnostics", sources = { "nvim_diagnostic" } },
           { "progress" },
