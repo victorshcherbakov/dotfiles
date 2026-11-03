@@ -1,5 +1,8 @@
 local M = {
-  "sindrets/diffview.nvim",
+  -- Maintained fork: upstream sindrets/diffview.nvim stopped in 06/2024 and expands every
+  -- collapsed folder of the file panel on each refresh (.git/index change, save, tab enter).
+  "dlyongemallo/diffview-plus.nvim",
+  version = "*",
   cmd = { "DiffviewOpen", "DiffviewFileHistory", "DiffviewClose" },
   keys = {
     "<Leader>ho",
