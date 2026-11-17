@@ -42,12 +42,24 @@ function M.config()
     { desc = "Diffview: working tree vs index" })
   km.map("n", "<Leader>hc", "<Cmd>DiffviewOpen HEAD~1<CR>",
     { desc = "Diffview: last commit" })
+  -- master of the remote the branch tracks: one repository can hold unrelated histories from
+  -- several remotes, and only that remote's master shares a merge-base with the branch.
+  -- No upstream, a local upstream or a detached HEAD fall back to origin.
+  local function upstream_master()
+    local branch = vim.system({ "git", "symbolic-ref", "--short", "-q", "HEAD" }, { text = true }):wait()
+    local remote = vim.system({ "git", "config", "branch." .. vim.trim(branch.stdout) .. ".remote" },
+      { text = true }):wait()
+    if remote.code ~= 0 or vim.trim(remote.stdout) == "." then
+      return "origin/master"
+    end
+    return vim.trim(remote.stdout) .. "/master"
+  end
   -- Three dots: the left side is the merge-base, so the diff holds only what this branch did.
   -- Two dots would also drag in every master commit made since, inverted.
   -- --imply-local puts the working tree on the right, so uncommitted edits show up too.
-  km.map("n", "<Leader>hm", "<Cmd>DiffviewOpen origin/master...HEAD --imply-local<CR>",
+  km.map("n", "<Leader>hm", function() vim.cmd("DiffviewOpen " .. upstream_master() .. "...HEAD --imply-local") end,
     { desc = "Diffview: this branch since merge-base" })
-  km.map("n", "<Leader>hM", "<Cmd>DiffviewOpen origin/master...HEAD<CR>",
+  km.map("n", "<Leader>hM", function() vim.cmd("DiffviewOpen " .. upstream_master() .. "...HEAD") end,
     { desc = "Diffview: this branch since merge-base, committed only" })
   km.map("n", "<Leader>hf", "<Cmd>DiffviewFileHistory %<CR>",
     { desc = "Diffview: current file history" })
