@@ -9,6 +9,7 @@ local M = {
     "<Leader>hc",
     "<Leader>hm",
     "<Leader>hM",
+    "<Leader>hg",
     "<Leader>hf",
     "<Leader>hF",
     "<Leader>hq",
@@ -42,17 +43,11 @@ function M.config()
     { desc = "Diffview: working tree vs index" })
   km.map("n", "<Leader>hc", "<Cmd>DiffviewOpen HEAD~1<CR>",
     { desc = "Diffview: last commit" })
-  -- master of the remote the branch tracks: one repository can hold unrelated histories from
-  -- several remotes, and only that remote's master shares a merge-base with the branch.
-  -- No upstream, a local upstream or a detached HEAD fall back to origin.
+  local git = require "sinbizkit.git"
+  -- A detached HEAD prints nothing, which parent_master sends to origin.
   local function upstream_master()
-    local branch = vim.system({ "git", "symbolic-ref", "--short", "-q", "HEAD" }, { text = true }):wait()
-    local remote = vim.system({ "git", "config", "branch." .. vim.trim(branch.stdout) .. ".remote" },
-      { text = true }):wait()
-    if remote.code ~= 0 or vim.trim(remote.stdout) == "." then
-      return "origin/master"
-    end
-    return vim.trim(remote.stdout) .. "/master"
+    local head = vim.system({ "git", "symbolic-ref", "-q", "HEAD" }, { text = true }):wait()
+    return git.parent_master(vim.trim(head.stdout))
   end
   -- Three dots: the left side is the merge-base, so the diff holds only what this branch did.
   -- Two dots would also drag in every master commit made since, inverted.
@@ -61,6 +56,12 @@ function M.config()
     { desc = "Diffview: this branch since merge-base" })
   km.map("n", "<Leader>hM", function() vim.cmd("DiffviewOpen " .. upstream_master() .. "...HEAD") end,
     { desc = "Diffview: this branch since merge-base, committed only" })
+  -- No --imply-local: the working tree belongs to HEAD, not to the picked branch.
+  km.map("n", "<Leader>hg", function()
+    require("sinbizkit.telescope.branch_picker").pick(function(branch)
+      vim.cmd("DiffviewOpen " .. git.parent_master(branch.refname) .. "..." .. branch.name)
+    end, git.parent_master)
+  end, { desc = "Diffview: picked branch since merge-base" })
   km.map("n", "<Leader>hf", "<Cmd>DiffviewFileHistory %<CR>",
     { desc = "Diffview: current file history" })
   km.map("n", "<Leader>hF", "<Cmd>DiffviewFileHistory<CR>",

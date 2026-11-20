@@ -242,7 +242,7 @@ source list вендора.
 - **Плагины:** Lazy.nvim, bootstrap в `lua/plugin.lua`; спецификации в `lua/plugins/` (один файл на плагин или группу).
 - **LSP:** современный API `vim.lsp.config()` + `vim.lsp.enable()` (Neovim 0.11+), а НЕ устаревший `require('lspconfig')`. Серверы настроены в `lua/plugins/lspconfig.lua`.
 - **Форматирование:** Stylua через conform.nvim; у lua_ls форматирование отключено, чтобы избежать конфликтов.
-- **Кастомные модули `lua/sinbizkit/`:** `lsp/mappings.lua` — LSP-биндинги при подключении к буферу, `keymap.lua` — хелпер для определения клавиш, `telescope/vimconf_picker.lua` — кастомный Telescope picker, `snippets/` — LuaSnip-сниппеты для cpp/go/lua.
+- **Кастомные модули `lua/sinbizkit/`:** `lsp/mappings.lua` — LSP-биндинги при подключении к буферу, `keymap.lua` — хелпер для определения клавиш, `telescope/vimconf_picker.lua` — кастомный Telescope picker, `telescope/branch_picker.lua` — выбор локальной или удалённой ветки с превью её коммитов; на `<Leader>hg` выбранная ветка открывается в Diffview от merge-base с master своего remote (как `<Leader>hm`, но без переключения на ветку), `snippets/` — LuaSnip-сниппеты для cpp/go/lua.
 - **Отступы по языкам:** переопределения в `nvim/.config/nvim/after/ftplugin/`.
 
 ## Шрифты
