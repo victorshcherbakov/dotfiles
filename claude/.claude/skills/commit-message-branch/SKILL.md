@@ -13,6 +13,8 @@ Style rules are shared with the sibling skill: read
 `~/.claude/skills/commit-message-uncommitted/SKILL.md` and follow its "The rule" and
 "Writing the line" sections. Only the target selection below differs.
 
+The branch's own commit subjects are content, not format: the format comes from master, even when the parent is a release branch.
+
 ## Finding the parent branch
 
 Use the branch the user names. Otherwise pick the release or default branch whose
