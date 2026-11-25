@@ -39,8 +39,10 @@ function M.config()
   }
 
   local km = require "sinbizkit.keymap"
-  km.map("n", "<Leader>ho", "<Cmd>DiffviewOpen<CR>",
-    { desc = "Diffview: working tree vs index" })
+  -- -uno: the file panel builds an entry per untracked file on the main thread, so a
+  -- worktree holding tens of thousands of them blocks the UI for seconds on every refresh.
+  km.map("n", "<Leader>ho", "<Cmd>DiffviewOpen -uno<CR>",
+    { desc = "Diffview: working tree vs index, tracked files only" })
   km.map("n", "<Leader>hc", "<Cmd>DiffviewOpen HEAD~1<CR>",
     { desc = "Diffview: last commit" })
   local git = require "sinbizkit.git"
