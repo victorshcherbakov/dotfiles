@@ -63,7 +63,7 @@ startup_mode = "Maximized"
 
 # Shift+Enter as its own key: CSI 13;2u, the CSI u encoding. Without this it
 # is a bare CR, the same as Enter, so no program can tell the two apart (Claude
-# Code inserts a newline on Shift+Enter). tmux parses the sequence and passes a
+# Code submits on Shift+Enter, see keybindings.json). tmux parses it and passes a
 # real Shift+Enter only to programs that ask for extended keys (extended-keys
 # in ~/.tmux.conf); everything else still gets a plain Enter.
 # Not Alacritty's kitty keyboard mode, which would do this natively: it also

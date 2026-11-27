@@ -10,6 +10,13 @@
         "alt+l": "scroll:halfPageUp",
         "alt+h": "scroll:halfPageDown"
       }
+    },
+    {
+      "context": "Chat",
+      "bindings": {
+        "enter": "chat:newline",
+        "shift+enter": "chat:submit"
+      }
     }
   ]
 }

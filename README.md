@@ -85,7 +85,7 @@ git config core.hooksPath .githooks
 | `nvim/` | Neovim — Lazy.nvim, LSP, Telescope, Treesitter, blink.cmp, render-markdown, gitsigns + Diffview |
 | `tmux/` | Tmux — TPM, nord-tmux, tmux-resurrect |
 | `fish/` | Fish shell — vi-mode, fzf, Oh-My-Fish |
-| `alacritty/` | Alacritty — JetBrainsMono Nerd Font, tokyonight; Shift+Enter шлёт собственную последовательность `CSI 13;2u`, а tmux (`extended-keys on`) передаёт её программам, которые её просят: в Claude Code и fish это перенос строки, остальные получают обычный Enter |
+| `alacritty/` | Alacritty — JetBrainsMono Nerd Font, tokyonight; Shift+Enter шлёт собственную последовательность `CSI 13;2u`, а tmux (`extended-keys on`) передаёт её программам, которые её просят: Claude Code по ней отправляет сообщение (а Enter переносит строку — `claude/.claude/keybindings.json`), fish переносит строку, остальные получают обычный Enter |
 | `lazygit/` | Lazygit — кастомные команды |
 | `lf/` | lf — файловый менеджер |
 | `gdb/` | GDB — Qt5/STL printers, GDB Dashboard |
