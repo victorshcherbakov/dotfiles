@@ -50,7 +50,7 @@
   "enabledPlugins": {
     "pyright-lsp@claude-plugins-official": true
   },
-  "language": "russian",
+  "language": "english",
   "effortLevel": "xhigh",
   "voice": {
     "enabled": true,
