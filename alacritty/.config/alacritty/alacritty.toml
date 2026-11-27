@@ -60,3 +60,15 @@ decorations = "full"
 dynamic_title = true
 opacity = 1.0
 startup_mode = "Maximized"
+
+# Shift+Enter as its own key: CSI 13;2u, the CSI u encoding. Without this it
+# is a bare CR, the same as Enter, so no program can tell the two apart (Claude
+# Code inserts a newline on Shift+Enter). tmux parses the sequence and passes a
+# real Shift+Enter only to programs that ask for extended keys (extended-keys
+# in ~/.tmux.conf); everything else still gets a plain Enter.
+# Not Alacritty's kitty keyboard mode, which would do this natively: it also
+# sends Esc as CSI 27u, which tmux 3.7 does not parse, and Esc breaks.
+[[keyboard.bindings]]
+key = "Return"
+mods = "Shift"
+chars = "\u001B[13;2u"
